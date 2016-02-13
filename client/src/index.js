@@ -1,5 +1,6 @@
 // var Bank = require("./bank/bank.js");
 var sampleStocks = require('./sampleStockData.json');
+var _ = require('lodash');
 //var Account = require("./bank/account.js")
 
 
@@ -12,5 +13,6 @@ var sampleStocks = require('./sampleStockData.json');
 window.onload = function(){
 
   console.log(sampleStocks);
+  console.log('lodash', _);
 }
 
