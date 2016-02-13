@@ -1,4 +1,4 @@
-var share = require('../share file path');
+var Share = require('../share file path');
 var assert = require('assert');
 
 describe('Share Model', function(){
