@@ -5,4 +5,10 @@ var Portfolio = function(){
   this.totalCash = 0;
 };
 
+Portfolio.prototype = {
+  addCash: function(amount){
+    this.totalCash += amount;
+  }
+}
+
 module.exports = Portfolio;
