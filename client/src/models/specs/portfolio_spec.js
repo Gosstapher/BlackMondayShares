@@ -31,7 +31,7 @@ describe('portfolio', function(){
     assert.equal(1000, portfolio.totalCash);
     assert.equal(0, portfolio.shares.length);
   });
-  it('should be possible to get the current value of the portfolio ,' function(){
+  it('should be possible to get the current value of the portfolio ', function(){
     var portfolio = new Portfolio;
     portfolio.addCash(1000);
     portfolio.buyShare('FXI');
@@ -45,7 +45,7 @@ describe('portfolio', function(){
     portfolio.recordEndOfDayValue();
     assert.equal(1000, portfolio.endOfDayPrices[0].holdings.total);
   });
-  it('should be possible to compare curent value to previous end of day values ', function(){
+  it('should be possible to compare curent value to previous end of day values', function(){
     var portfolio = new Portfolio;
     portfolio.addCash(1000);
     portfolio.buyShare('FXI');
@@ -53,17 +53,5 @@ describe('portfolio', function(){
     // compareValue() takes an argument which corresponds to an index value in the endOfDayPrices array. This can be changed if needs be. It should return a string which is the % difference in the 2 values.
     var expectedValue = portfolio.compareValue(0);
     assert.equal("-20%", expectedValue);
-  })
-
-
-
-
-
-
-
-
-
-
-
-
+  });
 })
