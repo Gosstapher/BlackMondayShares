@@ -8,17 +8,15 @@ var chai = require('chai');
 chai.use(require('chai-fuzzy'));
 
 describe('Share Model', function(){
-  
-  // beforeEach(function(){
-  //   console.log("Create new share....");
-  //   share1 = new Share("Shell", "SHL", 400);
-  // });
+
   it('should retreve input from input field', function(){
+    apiModel.getInput();
     expect(epic).to.be.a('string');
     expect(epic).to.have.length.of.at.most(4);
     expect(epic).to.be.uppercase();
   });
   it('should return data in JSON format', function(){
+    var shareData = apiModel.get()
     expect(shareData).to.exist;
     shareDataJSON.should.be.jsonOf(shareData);
     expect(shareData.query.results.quote.Ask).to.exist;
