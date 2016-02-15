@@ -1,16 +1,9 @@
 var sampleStocks = require('./sampleStockData.json');
 var _ = require('lodash');
+var apiModel = require('./models/api.js');
 
 
 window.onload = function(){
-
-  // console.log(sampleStocks);
-  // console.log('lodash', _);
-
-  // var epic = function(){
-  //   var input = prompt("Enter Epic: ");
-  //   return input.toUpperCase();
-  // }
 
   var shareSearch = document.getElementById("shareSearch");
   var epicValue = document.getElementById("epicValue");
@@ -31,11 +24,9 @@ window.onload = function(){
         console.log("got the data");
         shareData = JSON.parse(request.responseText);
         console.log(shareData);
-        module.exports = shareData;
+        apiModel.saveToModel(shareData);
       }
     }
-
     request.send(null);
   }
 }
-

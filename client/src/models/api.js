@@ -1,3 +1,12 @@
-shareData = require('../index.js')
+//require portfolio
+//require share
 
-console.log("share data in api.js: ", shareData);
+//get input
+//get json
+//format json
+//create share from formatted json
+var apiModel = {
+
+}
+
+module.exports = apiModel;

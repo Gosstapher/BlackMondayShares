@@ -46,17 +46,10 @@
 
 	var sampleStocks = __webpack_require__(1);
 	var _ = __webpack_require__(2);
+	var apiModel = __webpack_require__(4);
 	
 	
 	window.onload = function(){
-	
-	  // console.log(sampleStocks);
-	  // console.log('lodash', _);
-	
-	  // var epic = function(){
-	  //   var input = prompt("Enter Epic: ");
-	  //   return input.toUpperCase();
-	  // }
 	
 	  var shareSearch = document.getElementById("shareSearch");
 	  var epicValue = document.getElementById("epicValue");
@@ -77,15 +70,12 @@
 	        console.log("got the data");
 	        shareData = JSON.parse(request.responseText);
 	        console.log(shareData);
-	        module.exports = shareData;
+	        apiModel.saveToModel(shareData);
 	      }
 	    }
-	
 	    request.send(null);
 	  }
 	}
-	
-
 
 /***/ },
 /* 1 */
@@ -14937,6 +14927,23 @@
 		return module;
 	}
 
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	//require portfolio
+	//require share
+	
+	//get input
+	//get json
+	//format json
+	//create share from formatted json
+	var apiModel = {
+	
+	}
+	
+	module.exports = apiModel;
 
 /***/ }
 /******/ ]);
