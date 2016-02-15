@@ -83,8 +83,29 @@ this.getCurrentValue = function(){
     var shareByShare = {name:shareObject.name, value:holdingValue}
     totalHoldings.push(shareByShare);
   }
-  var getCurrentValue = {"shares":totalHoldings, "share value":totalShareValue, "cash in account":this.cash, "total assets":(this.cash + totalShareValue)};
-  console.log(getCurrentValue);
+  var getCurrentValue = {shares:totalHoldings, shareValue:totalShareValue, cashTotal:this.cash, totalAssets:(this.cash + totalShareValue)};
+      return getCurrentValue
+},
+
+this.endOfDayValue = function(){
+  var currentValue = this.getCurrentValue();
+  var endOfDayObject = {date:new Date(), totalEndValue:currentValue.totalAssets, shareEndValue:currentValue.shareValue, cashEndValue:currentValue.cashTotal}
+
+  this.historicalValues.push(endOfDayObject)
+}
+
+this.compareValues = function(historyDate){
+  var currentValue = this.getCurrentValue().totalAssets;
+  var historicalValue = _.find(this.historicalValues, function(o){
+        var inputStringDate = new Date(historyDate).toDateString();
+        var oStringDate = o.date.toDateString();
+            return inputStringDate == oStringDate  
+  })
+  var percentageChange =  ((currentValue - historicalValue.totalEndValue)/historicalValue.totalEndValue) *100;
+  console.log("%%%", percentageChange)
+  
+
+
 }
 
 }// end of constructor
@@ -109,11 +130,14 @@ share3 = new Share("BP", "BPO", 350)
 
 
 portfolio1.buyShares(share1, 2);
-// portfolio1.buyShares(share2, 1);
 portfolio1.buyShares(share3, 1);
-portfolio1.sellShares("Shell", 2);
 
-portfolio1.getCurrentValue();
+
+portfolio1.endOfDayValue();
+
+portfolio1.buyShares(share2, 1);
+// console.log(portfolio1)
+portfolio1.compareValues('Feb 15 2016')
 
 
 
