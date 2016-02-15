@@ -79,8 +79,8 @@ getCurrentValue: function(){
     var shareByShare = {name:shareObject.name, value:holdingValue}
     totalHoldings.push(shareByShare);
   }
-  var getCurrentValue = {shares:totalHoldings, shareValue:totalShareValue, cashTotal:this.cash, totalAssets:(this.cash + totalShareValue)};
-      return getCurrentValue
+  var CurrentValue = {shares:totalHoldings, shareValue:totalShareValue, cashTotal:this.cash, totalAssets:(this.cash + totalShareValue)};
+      return CurrentValue
 },
 
 endOfDayValue: function(){
@@ -88,13 +88,16 @@ endOfDayValue: function(){
   var endOfDayObject = {date:new Date(), totalEndValue:currentValue.totalAssets, shareEndValue:currentValue.shareValue, cashEndValue:currentValue.cashTotal}
 
   this.historicalValues.push(endOfDayObject)
-}
+},
 
   compareValues: function(historyDate){
   var currentValue = this.getCurrentValue().totalAssets;
   var historicalValue = _.find(this.historicalValues, function(o){
         var inputStringDate = new Date(historyDate).toDateString();
         var oStringDate = o.date.toDateString();
+        console.log("inputted date==", inputStringDate);
+        console.log("historical date date==", oStringDate);
+
             return inputStringDate == oStringDate  
     })
   var percentageChange =  ((currentValue - historicalValue.totalEndValue)/historicalValue.totalEndValue) *100;
