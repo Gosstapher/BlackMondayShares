@@ -1,18 +1,24 @@
-// var Bank = require("./bank/bank.js");
 var sampleStocks = require('./sampleStockData.json');
 var _ = require('lodash');
-//var Account = require("./bank/account.js")
+var Share = require('./share.js');
+var Portfolio = require('./portfolio.js');
 
 
+var shareArray = [];
 
 
-
+createShares = function(){
+  for(object of sampleStocks){
+    var onloadShare new Share(object.name, object.epic, object.price);
+    onloadShare.closingPrice = object.pastCloseOfDayPrices;
+    shareArray.push(onloadShare);
+  }
+}
 
 
 
 window.onload = function(){
 
-  console.log(sampleStocks);
-  console.log('lodash', _);
+  
 }
 
