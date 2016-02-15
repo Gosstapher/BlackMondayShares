@@ -51,39 +51,52 @@ var Portfolio = function(holder, cash){
   }
  },
 
- this.sellShares = function(shareName, quantity){
+ this.sellShares = function(shareName, sellQuantity){
         var sellShare = _.remove(this.sharePortfolio, function(o){
           return o.name == shareName;
       })
     if(!sellShare[0]){
       console.log("share does not exist in Portfolio");
     }else{
-      if(quantity > sellShare[0].quantity)
-        console.log("You don't have enough shares to sell")
-    }
-  }  
+      if(sellQuantity > sellShare[0].quantity){
+        console.log("You don't have enough shares to sell you only have " + sellShare[0].quantity)
+      }else{
+        console.log("Sell Shares")
+        sellShare[0].quantity -=sellQuantity;
+        sellShare.date = new Date();
+        this.cash += sellShare[0].share.price * sellQuantity;
+        if(sellShare[0].quantity > 0){
+          this.sharePortfolio.push(sellShare[0])
+        }
 
-  // this.sellShares = function(shareName, quantity){
-  //   selectedShares = [];
-  //   quantityOfSelected = 0;
+      }
+    } 
 
-  //   for(share of this.sharePortfolio){
-  //     if(share.name == shareName){
-  //         selectedShares.push(share);
-  //     }else{
-  //         console.log("You do not hold these shares")
-  //     }//end of if
-  //   } //end of for loop
-    
-  //   for(share of selectedShares){
+  }, //end of the sell Shares  
 
-  //   }
-  // }//End of sellShares
+this.getCurrentValue = function(){
+    var totalShareValue = 0;
+    var totalHoldings = []
+  for(shareObject of this.sharePortfolio){
+    var holdingValue = shareObject.share.price * shareObject.quantity;
+    totalShareValue +=holdingValue;
+    var shareByShare = {name:shareObject.name, value:holdingValue}
+    totalHoldings.push(shareByShare);
+  }
+  var getCurrentValue = {"shares":totalHoldings, "share value":totalShareValue, "cash in account":this.cash, "total assets":(this.cash + totalShareValue)};
+  console.log(getCurrentValue);
+}
+
+}// end of constructor
+
+ 
+  
+  
 
 
 
 
-   }
+   
 
 portfolio1 = new Portfolio("Andrew", 2000)
 
@@ -96,11 +109,11 @@ share3 = new Share("BP", "BPO", 350)
 
 
 portfolio1.buyShares(share1, 2);
-portfolio1.buyShares(share2, 1);
+// portfolio1.buyShares(share2, 1);
 portfolio1.buyShares(share3, 1);
-portfolio1.sellShares("Shell", 10);
+portfolio1.sellShares("Shell", 2);
 
-console.log(portfolio1)
+portfolio1.getCurrentValue();
 
 
 
