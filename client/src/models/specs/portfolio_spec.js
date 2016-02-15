@@ -6,53 +6,63 @@ var should = require('chai').should();
 
 describe('portfolio', function(){
   it('should be possible to generate an empty portfolio ', function(){
-    var portfolio = new Portfolio;
-    assert.equal(0, portfolio.shares.length);
-    assert.equal(0, portfolio.totalCash);
+    var portfolio = new Portfolio('Dan', 1000);
+    assert.equal(0, portfolio.sharePortfolio.length);
+    assert.equal(1000, portfolio.cash);
   });
   it('should be possible to add cash to the portfolio ', function(){
-    var portfolio = new Portfolio;
-    portfolio.addCash(1000);
-    assert.equal(1000, portfolio.totalCash);
+  var portfolio = new Portfolio('Dan', 1000);
+  portfolio.addCash(1000);
+  assert.equal(2000, portfolio.cash);
   }); 
   it('should be possible to buy a share for the portfolio ', function(){
-    var portfolio = new Portfolio;
+    var portfolio = new Portfolio('Dan', 1000);
     portfolio.addCash(1000);
-    portfolio.buyShare('FXI', 1);
-    assert.equal(880, portfolio.totalCash);
-    assert.equal(1, portfolio.shares.length);
-    assert.equal('Fusionex', portfolio.shares[0].name);
-    console.log(portfolio.shares[0]);
+    var share1 = new Share("Fusionex", "FXI", 120.00)
+    portfolio.buyShares(share1, 1);
+    assert.equal(1880, portfolio.cash);
+    assert.equal(1, portfolio.sharePortfolio.length);
+
+    // console.log(portfolio.sharePortfolio[0]);
   });
   it('should be possible to sell a share from the portfolio ', function(){
-    var portfolio = new Portfolio;
+    var portfolio = new Portfolio('Dan', 1000);
     portfolio.addCash(1000);
-    portfolio.buyShare('FXI');
-    portfolio.sellShare('Fusionex');
-    assert.equal(1000, portfolio.totalCash);
-    assert.equal(0, portfolio.shares.length);
+    var share1 = new Share("Fusionex", "FXI", 120.00);
+    portfolio.buyShares(share1, 2);
+    portfolio.sellShares('Fusionex', 2);
+    assert.equal(2000, portfolio.cash);
+    assert.equal(0, portfolio.sharePortfolio.length);
+    // console.log(portfolio.sharePortfolio[0]);
   });
   it('should be possible to get the current value of the portfolio ', function(){
-    var portfolio = new Portfolio;
-    portfolio.addCash(1000);
-    portfolio.buyShare('FXI');
-    var expectedValue = portfolio.calculateTotalValue();
-    assert.equal(1000, expectedValue);
+    var portfolio = new Portfolio('Dan', 1000);
+     portfolio.addCash(1000);
+    var share1 = new Share("Fusionex", "FXI", 120.00)
+    portfolio.buyShares(share1, 1);
+  var expectedValue = portfolio.getCurrentValue();
+  assert.equal(2000, expectedValue.totalAssets);
+  // console.log(expectedValue);
   });
   it('should be possible to record the end of day value of the portfolio for future reference ', function(){
-    var portfolio = new Portfolio;
+    var portfolio = new Portfolio('Dan', 1000);
     portfolio.addCash(1000);
-    portfolio.buyShare('FXI');
-    portfolio.recordEndOfDayValue();
-    assert.equal(1000, portfolio.endOfDayPrices[0].holdings.total);
+    var share1 = new Share("Fusionex", "FXI", 120.00)
+    portfolio.buyShares(share1, 2);
+    portfolio.endOfDayValue();
+    assert.equal(2000, portfolio.historicalValues[0].totalEndValue)
+    assert.equal(240, portfolio.historicalValues[0].shareEndValue);
+    assert.equal(1760, portfolio.historicalValues[0].cashEndValue);
+    // console.log(portfolio.historicalValues);
   });
   it('should be possible to compare curent value to previous end of day values', function(){
-    var portfolio = new Portfolio;
-    portfolio.addCash(1000);
-    portfolio.buyShare('FXI');
-    portfolio.endOfDayPrices.push({date:"Jan 1 2016", holdings:{cash:500, asset:300, total:800}});
-    // compareValue() takes an argument which corresponds to an index value in the endOfDayPrices array. This can be changed if needs be. It should return a string which is the % difference in the 2 values.
-    var expectedValue = portfolio.compareValue(0);
-    assert.equal("-20%", expectedValue);
+    var portfolio = new Portfolio('Dan', 500);
+
+    var share1 = new Share("Fusionex", "FXI", 120.00)
+    portfolio.buyShares(share1, 2);
+    portfolio.historicalValues.push({date: new Date("Jan 1 2016"), totalEndValue:1000, shareEndValue:800, cashEndValue:200} );
+    // console.log(portfolio)
+    var expectedValue = portfolio.compareValues("Jan 1 2016");
+    assert.equal(-50, expectedValue);
   });
 })

@@ -25,7 +25,15 @@ describe('Share Model', function(){
     shareData.query.results.quote.to.containOneLike('symbol');
   });
   it('should format the json date into an object usable by share and portfolio models', function(){
-    
+      newShare.should.containOneLike('name');
+      newShare.should.containOneLike('epic');
+      newShare.should.containOneLike('price');
+      expect(newShare.name).to.containOneLike("American Airlines Group, Inc.");
+      expect(newShare.epic).to.containOneLike('AAL');
+      expect(newShare.price).to.containOneLike('37.82');
   });
-  it('should create a share by using share model');
+  it('should create a share() by using share model', function(){
+    expect(apiModel.createNewShare()).to.respondTo(apiModel.epic());
+  });
+  it('should NOT create another share() if one already exists for the company');
 });
