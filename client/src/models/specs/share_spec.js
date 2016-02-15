@@ -28,9 +28,9 @@ describe('Share Model', function(){
     assert.deepEqual({"date": "Jan 2nd 16", "price": 200}, share1.closingPrice[1]);
   })
   //4. Can compare current price to a final day price in the past
-  it('Should by -50%', function(){
+  it('Should be able to calculate percentage change between current price and a historical price', function(){
     share1.closingDayRecord('01 Jan, 16');
     share1.newPrice(200);
-    assert.equal(-50, share1.compareCurrentTo('01 Jan, 16'));
+    assert.equal(-50, share1.compareCurrentTo('Jan 1st 16'));
   });
 });

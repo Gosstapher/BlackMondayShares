@@ -24,7 +24,6 @@ Share.prototype = {
         var change = (this.price - history.price);
         var step = (change/history.price);
         var percentChange = (step*100); 
-        console.log("percentChange===", percentChange);
         return percentChange;
       }
       else{"No date"};
@@ -35,5 +34,3 @@ Share.prototype = {
 }
 
 module.exports = Share;
-
-
