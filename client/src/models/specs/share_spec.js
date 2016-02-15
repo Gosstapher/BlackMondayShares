@@ -31,6 +31,6 @@ describe('Share Model', function(){
   it('Should by -50%', function(){
     share1.closingDayRecord('01 Jan, 16');
     share1.newPrice(200);
-    assert.equal(-50, share.compareCurrentTo('01 Jan, 16'));
+    assert.equal(-50, share1.compareCurrentTo('01 Jan, 16'));
   });
 });
