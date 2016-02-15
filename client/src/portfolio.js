@@ -1,23 +1,28 @@
 var _ = require('lodash');
-var Share = require('./share.js');
-var moment = require('moment')
+
+
+//Portfolio Constructor and Prototype
+var Share = function(name, epic, price){
+  this.name = name;
+  this.epic = epic;
+  this.price = price;
+  this.pastPrices = [{date:'01 Jan, 16', closing:200}, {date:'02 Jan, 16', closing:250}];
+}
+
+
 
 var Portfolio = function(holder, cash){
   this.holder = holder;
   this.cash = cash;
   this.sharePortfolio = [];
   this.historicalValues = [];
-}
-
-
-
-Portfolio.prototype = {
-  addCash: function(newCash){
+  
+  this.addCash = function(newCash){
       this.cash += newCash;
-  },
+  };
 
 
-  buyShares: function(shareObject, purchasedQuantity){
+  this.buyShares = function(shareObject, purchasedQuantity){
     if(this.cash > (shareObject.price * purchasedQuantity)){
         var currentShare = _.remove(this.sharePortfolio, function(o){
           return o.name == shareObject.name;
@@ -47,7 +52,7 @@ Portfolio.prototype = {
   }
  },
 
- sellShares: function(shareName, sellQuantity){
+ this.sellShares = function(shareName, sellQuantity){
         var sellShare = _.remove(this.sharePortfolio, function(o){
           return o.name == shareName;
       })
@@ -70,7 +75,7 @@ Portfolio.prototype = {
 
   }, //end of the sell Shares  
 
-getCurrentValue: function(){
+this.getCurrentValue = function(){
     var totalShareValue = 0;
     var totalHoldings = []
   for(shareObject of this.sharePortfolio){
@@ -83,25 +88,68 @@ getCurrentValue: function(){
       return getCurrentValue
 },
 
-endOfDayValue: function(){
+this.endOfDayValue = function(){
   var currentValue = this.getCurrentValue();
   var endOfDayObject = {date:new Date(), totalEndValue:currentValue.totalAssets, shareEndValue:currentValue.shareValue, cashEndValue:currentValue.cashTotal}
 
   this.historicalValues.push(endOfDayObject)
 }
 
-  compareValues: function(historyDate){
+this.compareValues = function(historyDate){
   var currentValue = this.getCurrentValue().totalAssets;
   var historicalValue = _.find(this.historicalValues, function(o){
         var inputStringDate = new Date(historyDate).toDateString();
         var oStringDate = o.date.toDateString();
             return inputStringDate == oStringDate  
-    })
+  })
   var percentageChange =  ((currentValue - historicalValue.totalEndValue)/historicalValue.totalEndValue) *100;
-      return percentageChange;
+  console.log("%%%", percentageChange)
   
-  }//end of compare values
 
-}// end of prototype
 
-module.exports = Portfolio
+}
+
+}// end of constructor
+
+ 
+  
+  
+
+
+
+
+   
+
+portfolio1 = new Portfolio("Andrew", 2000)
+
+
+
+share1 = new Share("Shell", "SHL", 400)
+share2 = new Share("Shell", "SHL", 200)
+share3 = new Share("BP", "BPO", 350)
+
+
+
+portfolio1.buyShares(share1, 2);
+portfolio1.buyShares(share3, 1);
+
+
+portfolio1.endOfDayValue();
+
+portfolio1.buyShares(share2, 1);
+// console.log(portfolio1)
+portfolio1.compareValues('Feb 15 2016')
+
+
+
+
+//portfolio1.sellShares("Shell", 200);
+
+
+
+//module.exports = Bank;
+
+
+
+
+
