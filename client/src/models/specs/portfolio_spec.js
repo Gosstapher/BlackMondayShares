@@ -18,10 +18,11 @@ describe('portfolio', function(){
   it('should be possible to buy a share for the portfolio ', function(){
     var portfolio = new Portfolio;
     portfolio.addCash(1000);
-    portfolio.buyShare('FXI');
-    assert.equal(900, portfolio.totalCash);
+    portfolio.buyShare('FXI', 1);
+    assert.equal(880, portfolio.totalCash);
     assert.equal(1, portfolio.shares.length);
     assert.equal('Fusionex', portfolio.shares[0].name);
+    console.log(portfolio.shares[0]);
   });
   it('should be possible to sell a share from the portfolio ', function(){
     var portfolio = new Portfolio;
