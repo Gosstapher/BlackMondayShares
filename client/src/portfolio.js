@@ -16,6 +16,7 @@ var Portfolio = function(holder, cash){
   this.cash = cash;
   this.sharePortfolio = [];
   this.historicalValues = [];
+  
   this.addCash = function(newCash){
       this.cash += newCash;
   };
