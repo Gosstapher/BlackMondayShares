@@ -27961,20 +27961,6 @@
 /* 105 */
 /***/ function(module, exports) {
 
-	//   createShares = function(callback){
-	//       portfolioShareArray = [];
-	//       for(object of sampleStocks){
-	//         var onloadShare = new Share(object.name, object.epic, object.price);
-	//         onloadShare.closingPrice = object.pastCloseOfDayPrices;
-	//         var portfolioShareInfo = {name:object.name, share:onloadShare, quantity:object.quantity, date:object.buyDate, avgPurchasePrice:object.buyPrice}
-	//         portfolioShareArray.push(portfolioShareInfo);
-	//       }
-	//       var MumsPortfolio = new Portfolio("Mum's", 1000)
-	//       MumsPortfolio.sharePortfolio = portfolioShareArray;
-	//        MumsPortfolio;
-	//        callback(MumsPortfolio);
-	// },
-	
 	
 	var PortfolioView = function(){
 	
@@ -28013,9 +27999,50 @@
 	
 	      yearContainer.appendChild(yearHigh)
 	
+	      var chartContainer = document.querySelector("#liveShareChart");
+	      var chart = new Highcharts.Chart({
+	        chart: {
+	            type: 'column',
+	            renderTo: chartContainer,
+	        },
+	        title: {
+	             text: shareObject.Name +' Share Live Data',
+	             align: 'center',
+	        },
+	        subtitle: {
+	             text: "CurrentSharePrice: " + shareObject.Currency+ " " + shareObject.Ask,
+	             align: 'left',
+	             style: {"color":"blue", "font-size":"1.2em"}
+	        },
+	        yAxis: {
+	            title: {
+	                text: 'Change in Percent (%)'
+	            },   
+	        },
+	        xAxis: {
+	            categories: ['Change Since Yesterday', 'Change on Month Average', 'Change on Six Month Average', 'Change On Year High Price', 'Change on Year Low Price', ]
+	        },
+	
+	        tooltip: {
+	            valueSuffix: '%'
+	        },
+	        series: [{
+	
+	          data: [ 
+	            ["Compared to Yesterdays Closing Value", parseInt((shareObject.Ask - shareObject.PreviousClose)/shareObject.PreviousClose*100)],
+	            ["Compared to Monthly Average", parseInt(shareObject.PercentChangeFromFiftydayMovingAverage)],
+	            ["Compared to Six Month Average", parseInt(shareObject.PercentChangeFromTwoHundreddayMovingAverage)],
+	            ["Compared to Highest Year Value", parseInt(shareObject.PercebtChangeFromYearHigh)],
+	            ["Compared to Lowest Year Value", parseInt(shareObject.PercentChangeFromYearLow)]
+	          ],
+	          threshold: 0,
+	          negativeColor: 'red',
+	          color: 'green',
+	        }]
 	      
-	      
-	      
+	      })//end of HighChart
+	
+	     console.log(chart) 
 	
 	
 	
@@ -28026,6 +28053,11 @@
 	    //Get the total Values of the Portfolio
 	    var holderName = document.querySelector("#holderName");
 	    holderName.innerHTML = "<h2 class='title'>" + portfolio.holder + " Share Portfolio</h2>";
+	    
+	    var portfolioContainer = document.querySelector("#mainPortfolioContainer")
+	    var portfolioCurrentValue = document.createElement("h3")
+	    portfolioCurrentValue.innerText ="Total Assets in Portfolio: £" + ((portfolio.getCurrentValue().totalAssets)/100) + "          Invested in Shares: £" + ((portfolio.getCurrentValue().shareValue)/100) + "          Cash Holdings: £" + ((portfolio.getCurrentValue().cashTotal)/100);
+	      portfolioContainer.appendChild(portfolioCurrentValue);
 	
 	    
 	    for(shareObject of portfolio.sharePortfolio){
@@ -28062,10 +28094,7 @@
 	      portfolioContainer.appendChild(shareRow);
 	      shareRow.style.borderTop = "thick solid #0000FF";
 	    }//End of Table Build
-	    var portfolioInfo = document.querySelector("#portfolioInfo")
-	    var portfolioCurrentValue = document.createElement("h3")
-	    portfolioCurrentValue.innerText ="Total Assets in Portfolio: £" + ((portfolio.getCurrentValue().totalAssets)/100) + "          Invested in Shares: £" + ((portfolio.getCurrentValue().shareValue)/100) + "          Cash Holdings: £" + ((portfolio.getCurrentValue().cashTotal)/100);
-	    portfolioInfo.appendChild(portfolioCurrentValue);
+	    
 	  }//End of Create View Method
 	}//end of model
 	

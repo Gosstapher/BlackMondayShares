@@ -2,15 +2,20 @@
 <html>
 <head>
   <title>Black Monday App</title>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
   <script src="bundle.js"></script>
+  <link rel="stylesheet" type="text/css" href="main.css"/>
 </head>
-<body>
-
+<body width="100%">
+<h1 id="mainTitle">Black Monday Shares App</h1>
 
   <form>
     <input id="epicValue" type="text" name="epic">
     <input id="shareSearch" type="submit" value="Submit" name="epic">
   </form>
+  <div id="liveShareChart" style="width:50%">
+    
+  </div>
 
   <div id="shareDisplay">
       <h2 id="shareName"></h2>
@@ -22,12 +27,11 @@
 
 
   <section id="porfolioDisplay">
-  <div id="portfolioInfo">
     <h2 id="holderName"></h2>
-    
-    <div id="mainPortfolioContainer">
-    </div>
-  </div>
+      <div id="portfolioInfo">
+        <div id="mainPortfolioContainer">
+        </div>
+        </div>
   </section>
 
 </body>
