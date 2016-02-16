@@ -8,7 +8,6 @@ var PortfolioView = require('./PortfolioView.js');
 share1 = new Share("Insleys", "INS", 120.00)
 portfolioView = new PortfolioView();
 
-
   createShares = function(callback){
       portfolioShareArray = [];
       for(object of sampleStocks){
@@ -23,11 +22,26 @@ portfolioView = new PortfolioView();
        callback(MumsPortfolio);
 }
 
-
 window.onload = function(){
   bindEvents();
   createShares(portfolioView.createView);
 }
+
+var populateSharesFromDB = function(){
+  var url = '/shares'
+  var request = new XMLHttpRequest();
+  request.open("GET", url);
+  request.onload = function () {
+    if (request.status === 200) {
+      var jsonString = request.responseText;
+      var mongoShares = JSON.parse(jsonString);
+      console.log("mongoShare: ", mongoShares);
+    }
+  }.bind(this);
+  request.send(null);
+}
+
+populateSharesFromDB();
 
 function bindEvents(){
   var shareSearch = document.getElementById("shareSearch");
@@ -46,19 +60,3 @@ function createShareModel(shareData){
   var newShare = new Share(shareData.Name, shareData.symbol, shareData.Ask);
   console.log(newShare);
 }
-
-
-
-
-
-
-
-
-
-  
-    
-
-
-
-
-
