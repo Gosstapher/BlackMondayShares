@@ -1,36 +1,28 @@
-// var Bank = require("./bank/bank.js");
 var sampleStocks = require('./sampleStockData.json');
 var _ = require('lodash');
-//var Account = require("./bank/account.js")
-
-
-
-
-
-
-
+var apiModel = require('./models/api.js');
+var Portfolio = require('./models/portfolio.js');
+var Share = require('./models/share.js');
 
 window.onload = function(){
+  bindEvents();
+}
 
-  // console.log(sampleStocks);
+function bindEvents(){
+  var shareSearch = document.getElementById("shareSearch");
+
+  shareSearch.onclick = function(event){
+    event.preventDefault();
+    var epicValue = document.getElementById("epicValue"); 
   
-
-  createShares = function(){
-      portfolioShareArray = [];
-      for(object of sampleStocks){
-        var onloadShare new Share(object.name, object.epic, object.price);
-        onloadShare.closingPrice = object.pastCloseOfDayPrices;
-        var portfolioShareInfo = {name:object.name, share:onloadShare, quantity:object.quantity, date:object.buyDate, avgPurchasePrice:Object.buyPrice}
-        portfolioShareArray.push(portfolioShareInfo);
-      }
-      var jaysMumsPortfolio = new Portfolio("Jay's Mum", 1000)
-      jaysMumsPortfolio.sharePortfolio = portfolioShareArray;
-      console.log("Our Portfolio====", jaysMumsPortfolio);
-}
-
-    createShares();
+    var epic = epicValue.value.toUpperCase();
+    apiModel.get(epic, createShareModel);
+  }
 
 }
 
-
+function createShareModel(shareData){
+  var newShare = new Share(shareData.Name, shareData.symbol, shareData.Ask);
+  console.log(newShare);
+}
 
