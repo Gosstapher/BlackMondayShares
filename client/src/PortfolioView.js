@@ -90,8 +90,97 @@ var PortfolioView = function(){
     //Get the total Values of the Portfolio
     var holderName = document.querySelector("#holderName");
     holderName.innerHTML = "<h2 class='title'>" + portfolio.holder + " Share Portfolio</h2>";
-    
+
     var portfolioContainer = document.querySelector("#mainPortfolioContainer")
+  //Portfolio Column Chart
+
+    var portfolioChart = document.createElement("div");
+    portfolioContainer.appendChild(portfolioChart);
+    portfolioChart.id = "portfolioChart";
+    portfolioChart.style.width = "50%";
+
+    
+
+
+    //Portfolio Value Chart
+    var portfolioChart = new Highcharts.Chart({
+      chart: {
+        type: 'column',
+        renderTo: portfolioChart,
+      },
+      title: {
+        text:"Graph displaying info for " + portfolio.holder + " Portfolio",
+        align: 'center',
+      },
+      yAxis: {
+        title: {
+          text: 'Value in Currency (£)'
+        },   
+      },
+      xAxis: {
+        categories: ['Total Assets', 'Shares holdings', 'Cash Holdings' ]
+      },
+      tooltip: {
+        valuePrefix: '£'
+      },
+      plotOptions: {
+              column: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: true
+              }
+      },
+      series: [{
+        data:[
+          ["Total Assets Held", (portfolio.getCurrentValue().totalAssets/100)],
+          ["Total Share Holdings", (portfolio.getCurrentValue().shareValue/100)],
+          ["Total Cash Holdings", (portfolio.getCurrentValue().cashTotal/100)],
+        ]
+      }]
+
+    })
+
+    //Creating Data for Pie Chart
+    var portfolioPie = document.createElement("div");
+    portfolioContainer.appendChild(portfolioPie);
+    portfolioPie.id = "portfolioPie";
+    portfolioPie.style.width = "50%";
+
+    portfolioHoldings = []
+    for(shareObject of portfolio.sharePortfolio){
+      pieDataObject = [shareObject.name, (shareObject.share.price*shareObject.quantity)];
+      portfolioHoldings.push(pieDataObject);
+    }
+    console.log(portfolioHoldings)
+
+    var portfolioPieChart = new Highcharts.Chart({
+          chart: {
+                type: 'Pie',
+                renderTo: portfolioPie,
+              },
+          title: {
+            text:"Share makeup of " + portfolio.holder + " Portfolio.",
+            align: 'center',
+          },
+         series: [{
+            type: "pie",
+            data: portfolioHoldings
+         }],
+         tooltip: {
+           valuePrefix: '£'
+         },
+
+         
+        
+    })          
+
+
+
+
+
+
+
     var portfolioCurrentValue = document.createElement("h3")
     portfolioCurrentValue.innerText ="Total Assets in Portfolio: £" + ((portfolio.getCurrentValue().totalAssets)/100) + "          Invested in Shares: £" + ((portfolio.getCurrentValue().shareValue)/100) + "          Cash Holdings: £" + ((portfolio.getCurrentValue().cashTotal)/100);
       portfolioContainer.appendChild(portfolioCurrentValue);
