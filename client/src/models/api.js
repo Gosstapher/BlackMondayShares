@@ -14,7 +14,7 @@ var apiModel = {
         console.log("got the data");
         var shareData = JSON.parse(request.responseText);
         console.log(shareData.query.results.quote);
-        callback(shareData.query.results.quote);
+        callback(shareData.query.results);
       }
     }
     request.send(null);
