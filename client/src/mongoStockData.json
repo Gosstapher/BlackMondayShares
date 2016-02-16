@@ -1,0 +1,32 @@
+[
+  {
+    "name": "American Airlines Group, Inc.",
+    "epic": "AAL",
+    "current price": null,
+    "close prices": []
+  },
+  {
+    "name": "Archer-Daniels-Midland Company",
+    "epic": "ADM",
+    "current price": null,
+    "close prices": []
+  },
+  {
+    "name": "Aviva plc Unsponsored ADR (UK)",
+    "epic":"AV" ,
+    "current price": null,
+    "close prices": []
+  },
+  {
+    "name": "Amazon.com, Inc.",
+    "epic": "AMZN",
+    "current price": null,
+    "close prices": []
+  },
+  {
+    "name": "Astrazeneca PLC Common Stock",
+    "epic": "AZN",
+    "current price": null,
+    "close prices": []
+  }
+]
