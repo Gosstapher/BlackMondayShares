@@ -71,7 +71,7 @@
 	
 	
 	window.onload = function(){
-	  bindEvents();
+	  bindEvents(portfolioView.apiShareView);
 	  createShares(portfolioView.createView);
 	}
 	
@@ -83,7 +83,7 @@
 	    var epicValue = document.getElementById("epicValue"); 
 	  
 	    var epic = epicValue.value.toUpperCase();
-	    apiModel.get(epic, createShareModel);
+	    apiModel.get(epic, portfolioView.apiShareView);
 	  }
 	
 	}
@@ -14980,8 +14980,8 @@
 	      if(request.status === 200){
 	        console.log("got the data");
 	        var shareData = JSON.parse(request.responseText);
-	        console.log(shareData.query.results.quote);
-	        callback(shareData.query.results);
+	        // console.log(shareData.query.results.quote);
+	        callback(shareData.query.results.quote);
 	      }
 	    }
 	    request.send(null);
@@ -27958,6 +27958,42 @@
 	
 	
 	var PortfolioView = function(){
+	
+	  this.apiShareView = function(shareObject){
+	      //Clear Objects
+	
+	      //Display Share Name
+	      console.log(shareObject)
+	      var shareName = document.querySelector("#shareName");
+	      shareName.innerText = shareObject.Name;
+	      //Display Current Price
+	      var sharePrice = document.querySelector("#sharePrice");
+	      sharePrice.innerText = "Current Share Price: £" + shareObject.Ask;
+	      //Display Yesterday Closing Price
+	      var yesterdayContainer = document.querySelector("#dailyChange")
+	      yesterdayContainer.innerHTML = " "
+	      var yesterdayPrice = document.createElement("li");
+	      yesterdayPrice.innerText = "Previous Closing Price: £" + shareObject.PreviousClose
+	      var yesterdayComparison = document.createElement("li");
+	      yesterdayComparison.innerText = (((shareObject.Ask - shareObject.PreviousClose)/shareObject.PreviousClose) * 100).toFixed(2) + "%";
+	      console.log(typeof(yesterdayComparison.innerText[0]))
+	      if(yesterdayComparison.innerText[0] == "-"){
+	        yesterdayComparison.style.color = "red"
+	      }else{
+	        yesterdayComparison.style.color = "green"
+	      }
+	      yesterdayContainer.appendChild(yesterdayPrice);
+	      yesterdayContainer.appendChild(yesterdayComparison);
+	
+	      //Display Change Against Year High and Low
+	      var yearContainer = document.querySelector("#year")
+	      yearContainer.innerHTML = " "
+	      var yearHigh = document.createElement("li")
+	      var yearLow = document.createElement("li")
+	      yearHigh.innerHTML = "<p>Year High: " +  shareObject.YearHigh + " Compared to today: " + shareObject.ChangeFromYearHigh +  "% </p><p>Year Low: " + shareObject.YearLow + " Compared to today: " + shareObject.ChangeFromYearLow + "%";
+	
+	      yearContainer.appendChild(yearHigh)
+	  }
 	
 	  this.createView = function(portfolio){
 	    //Get the total Values of the Portfolio

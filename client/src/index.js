@@ -25,7 +25,7 @@ portfolioView = new PortfolioView();
 
 
 window.onload = function(){
-  bindEvents();
+  bindEvents(portfolioView.apiShareView);
   createShares(portfolioView.createView);
 }
 
@@ -37,7 +37,7 @@ function bindEvents(){
     var epicValue = document.getElementById("epicValue"); 
   
     var epic = epicValue.value.toUpperCase();
-    apiModel.get(epic, createShareModel);
+    apiModel.get(epic, portfolioView.apiShareView);
   }
 
 }
