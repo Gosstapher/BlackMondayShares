@@ -18,6 +18,7 @@ Share.prototype = {
     var lastCloseObject = {"date": this.lastClose, "price": this.price};
     this.closingPrice.push(lastCloseObject);
   },
+  
   compareCurrentTo: function(wantedDate){
     for(history of this.closingPrice){
       if(history.date == wantedDate){
@@ -29,7 +30,6 @@ Share.prototype = {
       else{"No date"};
     }
   }
-
 
 }
 
