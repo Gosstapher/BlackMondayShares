@@ -1,4 +1,16 @@
-
+//   createShares = function(callback){
+//       portfolioShareArray = [];
+//       for(object of sampleStocks){
+//         var onloadShare = new Share(object.name, object.epic, object.price);
+//         onloadShare.closingPrice = object.pastCloseOfDayPrices;
+//         var portfolioShareInfo = {name:object.name, share:onloadShare, quantity:object.quantity, date:object.buyDate, avgPurchasePrice:object.buyPrice}
+//         portfolioShareArray.push(portfolioShareInfo);
+//       }
+//       var MumsPortfolio = new Portfolio("Mum's", 1000)
+//       MumsPortfolio.sharePortfolio = portfolioShareArray;
+//        MumsPortfolio;
+//        callback(MumsPortfolio);
+// },
 
 
 var PortfolioView = function(){
@@ -34,9 +46,17 @@ var PortfolioView = function(){
       yearContainer.innerHTML = " "
       var yearHigh = document.createElement("li")
       var yearLow = document.createElement("li")
-      yearHigh.innerHTML = "<p>Year High: " +  shareObject.YearHigh + " Compared to today: " + shareObject.ChangeFromYearHigh +  "% </p><p>Year Low: " + shareObject.YearLow + " Compared to today: " + shareObject.ChangeFromYearLow + "%";
+      yearHigh.innerHTML = "<p>Year High: " +  shareObject.YearHigh + " Compared to today: " + ((shareObject.ChangeFromYearHigh/shareObject.YearHigh)*100).toFixed(2) +  "% </p><p>Year Low: " + shareObject.YearLow + " Compared to today: " + ((shareObject.ChangeFromYearLow/shareObject.YearLow)*100).toFixed(2) + "%";
 
       yearContainer.appendChild(yearHigh)
+
+      
+      
+      
+
+
+
+
   }
 
   this.createView = function(portfolio){
@@ -44,6 +64,7 @@ var PortfolioView = function(){
     var holderName = document.querySelector("#holderName");
     holderName.innerHTML = "<h2 class='title'>" + portfolio.holder + " Share Portfolio</h2>";
 
+    
     for(shareObject of portfolio.sharePortfolio){
       var portfolioContainer = document.querySelector("#mainPortfolioContainer")
       var shareRow = document.createElement("div");

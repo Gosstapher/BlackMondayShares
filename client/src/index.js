@@ -26,7 +26,7 @@ portfolioView = new PortfolioView();
 
 window.onload = function(){
   bindEvents(portfolioView.apiShareView);
-  createShares(portfolioView.createView);
+  //createShares(portfolioView.createView);
 }
 
 function bindEvents(){
@@ -39,6 +39,14 @@ function bindEvents(){
     var epic = epicValue.value.toUpperCase();
     apiModel.get(epic, portfolioView.apiShareView);
   }
+
+ var portfolioDropdown = document.getElementById("portfolioButton");
+ portfolioDropdown.addEventListener('click', function(){
+    console.log("Working")
+    createShares(portfolioView.createView);
+    
+ })
+
 
 }
 
