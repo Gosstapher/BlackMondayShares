@@ -49,7 +49,7 @@ module.exports = [
       "epic":"RBN",
       "price": 202.00,
       "quantity": 5000,
-      "buyPrice": 80.50,
+      "buyPrice": 180.50,
       "pastCloseOfDayPrices": [{"date":"01 Jan 2016", "price":201.00}, {"date":"02 Jan 2016", "price":200.50}, {"date":"03 Jan 2016", "price":200.00}, {"date":"04 Jan 2016", "price":202.30}, {"date":"05 Jan 2016", "price":202.40}, {"date":"08 Jan 2016", "price":202.10}, {"date":"09 Jan 2016", "price":203.00}],
       "buyDate":"2014-04-10"
     },
@@ -67,7 +67,7 @@ module.exports = [
       "epic":"RBS",
       "price": 233.00,
       "quantity": 8000,
-      "buyPrice": 790.00,
+      "buyPrice": 490.00,
       "pastCloseOfDayPrices": [{"date":"01 Jan 2016", "price":228.00}, {"date":"02 Jan 2016", "price":229.10}, {"date":"03 Jan 2016", "price":228.10}, {"date":"04 Jan 2016", "price":229.70}, {"date":"05 Jan 2016", "price":230.90}, {"date":"08 Jan 2016", "price":231.10}, {"date":"09 Jan 2016", "price":231.40}],
       "buyDate":"2016-01-15"
     },
@@ -85,7 +85,7 @@ module.exports = [
       "epic":"SDM",
       "price": 116.90,
       "quantity": 5000,
-      "buyPrice": 9.00,
+      "buyPrice": 99.00,
       "pastCloseOfDayPrices": [{"date":"01 Jan 2016", "price":115.00}, {"date":"02 Jan 2016", "price":115.00}, {"date":"03 Jan 2016", "price":115.50}, {"date":"04 Jan 2016", "price":115.90}, {"date":"05 Jan 2016", "price":116.30}, {"date":"08 Jan 2016", "price":116.40}, {"date":"09 Jan 2016", "price":116.80}],
       "buyDate":"2014-04-04"
     }

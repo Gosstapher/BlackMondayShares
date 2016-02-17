@@ -171,7 +171,7 @@
 	      "epic":"RBN",
 	      "price": 202.00,
 	      "quantity": 5000,
-	      "buyPrice": 80.50,
+	      "buyPrice": 180.50,
 	      "pastCloseOfDayPrices": [{"date":"01 Jan 2016", "price":201.00}, {"date":"02 Jan 2016", "price":200.50}, {"date":"03 Jan 2016", "price":200.00}, {"date":"04 Jan 2016", "price":202.30}, {"date":"05 Jan 2016", "price":202.40}, {"date":"08 Jan 2016", "price":202.10}, {"date":"09 Jan 2016", "price":203.00}],
 	      "buyDate":"2014-04-10"
 	    },
@@ -189,7 +189,7 @@
 	      "epic":"RBS",
 	      "price": 233.00,
 	      "quantity": 8000,
-	      "buyPrice": 790.00,
+	      "buyPrice": 490.00,
 	      "pastCloseOfDayPrices": [{"date":"01 Jan 2016", "price":228.00}, {"date":"02 Jan 2016", "price":229.10}, {"date":"03 Jan 2016", "price":228.10}, {"date":"04 Jan 2016", "price":229.70}, {"date":"05 Jan 2016", "price":230.90}, {"date":"08 Jan 2016", "price":231.10}, {"date":"09 Jan 2016", "price":231.40}],
 	      "buyDate":"2016-01-15"
 	    },
@@ -207,7 +207,7 @@
 	      "epic":"SDM",
 	      "price": 116.90,
 	      "quantity": 5000,
-	      "buyPrice": 9.00,
+	      "buyPrice": 99.00,
 	      "pastCloseOfDayPrices": [{"date":"01 Jan 2016", "price":115.00}, {"date":"02 Jan 2016", "price":115.00}, {"date":"03 Jan 2016", "price":115.50}, {"date":"04 Jan 2016", "price":115.90}, {"date":"05 Jan 2016", "price":116.30}, {"date":"08 Jan 2016", "price":116.40}, {"date":"09 Jan 2016", "price":116.80}],
 	      "buyDate":"2014-04-04"
 	    }
@@ -28181,7 +28181,101 @@
 	  }//End of Create View Method
 	
 	  this.analysisView = function(portfolio){
-	      console.log("This is the analysis View console log portfolio" + portfolio)
+	    //getting data for Share Info Chart
+	    var shareNames = [];
+	    var sharePerformanceData = [];
+	    var shareEarningData = [];
+	
+	    for(shareObject of portfolio.sharePortfolio){
+	      var newSharePerformanceData = [shareObject.name, (((shareObject.share.price - shareObject.avgPurchasePrice)/(shareObject.avgPurchasePrice)) * 100)]
+	      var newShareEarningData = [shareObject.name, (shareObject.share.price - shareObject.avgPurchasePrice)]
+	      var newShareName = shareObject.name;
+	      
+	      
+	      sharePerformanceData.push(newSharePerformanceData);
+	      shareEarningData.push(newShareEarningData);
+	      shareNames.push(newShareName);
+	    }
+	
+	    //Start of Share Percentage Change Since bought Chart
+	    var sharePerformanceContainer = document.querySelector("#sharePerformance");
+	    sharePerformanceContainer.style.width ="50%"
+	    var chart = new Highcharts.Chart({
+	      chart: {
+	          type: 'column',
+	          renderTo: sharePerformanceContainer,
+	      },
+	      title: {
+	           text: portfolio.holder + " Stocks Portfolio",
+	           align: 'center',
+	      },
+	      subtitle: {
+	           text: "Shares Held Performance Per Share in %",
+	           align: 'center',
+	           style: {"color":"blue", "font-size":"1.2em"}
+	      },
+	      yAxis: {
+	          title: {
+	              text: 'Percentage Perforance (%)'
+	          },   
+	      },
+	      xAxis: {
+	          categories: shareNames,
+	      },
+	
+	      tooltip: {
+	          valueSuffix: '%'
+	      },
+	      series: [{
+	
+	        data: sharePerformanceData,
+	        threshold: 0,
+	        negativeColor: 'red',
+	        color: 'green',
+	      }]
+	    
+	    })//end of HighChart
+	
+	    //Start of Earning Per Share Chart
+	    var earningPerShareContainer = document.querySelector("#earningsPerShare");
+	    earningPerShareContainer.style.width ="50%"
+	    var chart = new Highcharts.Chart({
+	      chart: {
+	          type: 'column',
+	          renderTo: earningPerShareContainer,
+	      },
+	      title: {
+	           text: portfolio.holder + " Stocks Portfolio",
+	           align: 'center',
+	      },
+	      subtitle: {
+	           text: "Earnings per Share in the Portfolio in cents",
+	           align: 'center',
+	           style: {"color":"blue", "font-size":"1.2em"}
+	      },
+	      yAxis: {
+	          title: {
+	              text: 'Earnings in Cents (c)'
+	          },   
+	      },
+	      xAxis: {
+	          categories: shareNames,
+	      },
+	
+	      tooltip: {
+	          valueSuffix: 'cents'
+	      },
+	      series: [{
+	
+	        data: shareEarningData,
+	        threshold: 0,
+	        negativeColor: 'red',
+	        color: 'green',
+	      }]
+	    
+	    })//end of Earning Per Share HighChart
+	
+	      
 	  }//End of analysisView
 	
 	}//end of model

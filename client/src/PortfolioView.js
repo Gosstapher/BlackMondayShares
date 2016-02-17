@@ -220,7 +220,101 @@ function PortfolioView(){
   }//End of Create View Method
 
   this.analysisView = function(portfolio){
-      console.log("This is the analysis View console log portfolio" + portfolio)
+    //getting data for Share Info Chart
+    var shareNames = [];
+    var sharePerformanceData = [];
+    var shareEarningData = [];
+
+    for(shareObject of portfolio.sharePortfolio){
+      var newSharePerformanceData = [shareObject.name, (((shareObject.share.price - shareObject.avgPurchasePrice)/(shareObject.avgPurchasePrice)) * 100)]
+      var newShareEarningData = [shareObject.name, (shareObject.share.price - shareObject.avgPurchasePrice)]
+      var newShareName = shareObject.name;
+      
+      
+      sharePerformanceData.push(newSharePerformanceData);
+      shareEarningData.push(newShareEarningData);
+      shareNames.push(newShareName);
+    }
+
+    //Start of Share Percentage Change Since bought Chart
+    var sharePerformanceContainer = document.querySelector("#sharePerformance");
+    sharePerformanceContainer.style.width ="50%"
+    var chart = new Highcharts.Chart({
+      chart: {
+          type: 'column',
+          renderTo: sharePerformanceContainer,
+      },
+      title: {
+           text: portfolio.holder + " Stocks Portfolio",
+           align: 'center',
+      },
+      subtitle: {
+           text: "Shares Held Performance Per Share in %",
+           align: 'center',
+           style: {"color":"blue", "font-size":"1.2em"}
+      },
+      yAxis: {
+          title: {
+              text: 'Percentage Perforance (%)'
+          },   
+      },
+      xAxis: {
+          categories: shareNames,
+      },
+
+      tooltip: {
+          valueSuffix: '%'
+      },
+      series: [{
+
+        data: sharePerformanceData,
+        threshold: 0,
+        negativeColor: 'red',
+        color: 'green',
+      }]
+    
+    })//end of HighChart
+
+    //Start of Earning Per Share Chart
+    var earningPerShareContainer = document.querySelector("#earningsPerShare");
+    earningPerShareContainer.style.width ="50%"
+    var chart = new Highcharts.Chart({
+      chart: {
+          type: 'column',
+          renderTo: earningPerShareContainer,
+      },
+      title: {
+           text: portfolio.holder + " Stocks Portfolio",
+           align: 'center',
+      },
+      subtitle: {
+           text: "Earnings per Share in the Portfolio in cents",
+           align: 'center',
+           style: {"color":"blue", "font-size":"1.2em"}
+      },
+      yAxis: {
+          title: {
+              text: 'Earnings in Cents (c)'
+          },   
+      },
+      xAxis: {
+          categories: shareNames,
+      },
+
+      tooltip: {
+          valueSuffix: 'cents'
+      },
+      series: [{
+
+        data: shareEarningData,
+        threshold: 0,
+        negativeColor: 'red',
+        color: 'green',
+      }]
+    
+    })//end of Earning Per Share HighChart
+
+      
   }//End of analysisView
 
 }//end of model
