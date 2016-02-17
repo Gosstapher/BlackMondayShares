@@ -27,21 +27,23 @@ window.onload = function(){
   createShares(portfolioView.createView);
 }
 
-var populateSharesFromDB = function(){
-  var url = '/shares'
+var populateSharesFromDB = function(collection){
+  var url = '/'+collection;
   var request = new XMLHttpRequest();
   request.open("GET", url);
   request.onload = function () {
     if (request.status === 200) {
       var jsonString = request.responseText;
-      var mongoShares = JSON.parse(jsonString);
-      console.log("mongoShare: ", mongoShares);
+      var mongoData = JSON.parse(jsonString);
+      console.log("mongoDB "+collection+": ", mongoData);
     }
   }.bind(this);
   request.send(null);
 }
 
-populateSharesFromDB();
+populateFromDB(shares);
+populateFromDB(portfolio);
+
 
 function bindEvents(){
   var shareSearch = document.getElementById("shareSearch");

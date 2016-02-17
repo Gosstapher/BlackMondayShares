@@ -17,12 +17,20 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 
-// GET REQUEST TO SHARE DB
+// GET REQUEST TO SHARE COLLECTION
 app.get("/shares", function(req, res){
   Shares.find(function(err, shares) {
-    if(err) console.log(err)
+    if(err) console.log("share collection error: ", err);
     res.json(shares);
-  })
+  });
+});
+
+//GET REQUEST TO PORTFOLIO COLLECTION
+app.get("/portfolio", function(res, req){
+  Portfolio.find(function(err, portfolio){
+    if(err) console.log("portfolio collection error: ", err);
+    res.json(portfolio);
+  });
 });
 
 var server = app.listen(3000, function () {
