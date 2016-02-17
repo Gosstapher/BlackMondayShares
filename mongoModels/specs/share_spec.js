@@ -18,11 +18,11 @@ describe('mongoShare', function(){
     });
   });
 
-  it('should make a POST request to crate a share', function(done){
+  it('should make a POST request to create a share', function(done){
     superagent.post('http://localhost:3000/shares').send({
-      name: "GlaxoSmithKline PLC Common Stoc",
-      epic: "GSK",
-      currentPrice: 32.28
+      name: "Apple Inc.",
+      epic: "APPL",
+      currentPrice: 97.25
     }).end(function(err, res){
       expect(err).to.eql(null);
       expect(res.body).to.be.an('object');
@@ -32,14 +32,17 @@ describe('mongoShare', function(){
     });
   });
 
-  it('should throw an ERROR if name or epic mot present', function(done){
+  it('should throw an ERROR if name or epic not present', function(done){
     superagent.post('http://localhost:3000/shares').send({
       currentPrice: 19.99
     }).end(function(err, res){
-      expect(err).to.be(true);
-      console.log(err.message);
+      console.log(res.body.message);
+      // expect(res.body.message).to.equal('MongoShare validation failed');
+      assert.equal('MongoShare validation failed', res.body.message);
+      done();
     });
   });
+
 });
 
 

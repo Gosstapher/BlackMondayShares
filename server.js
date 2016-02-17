@@ -35,9 +35,13 @@ app.post("/shares", function(req, res){
   var newShare = new Shares(req.body);
 
   newShare.save(function(err, share){
-    if(err) console.log("share POST error: ", err);
-    console.log("New share Created");
-    res.json(newShare);
+    if(err){
+      res.json(err);
+      console.log(typeof err);
+    } else{
+      console.log("New share Created");
+      res.json(newShare);
+    }
   });
 });
 

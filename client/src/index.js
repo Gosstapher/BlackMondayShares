@@ -19,8 +19,8 @@ portfolioView = new PortfolioView();
       }
       var MumsPortfolio = new Portfolio("Mum's", 1000)
       MumsPortfolio.sharePortfolio = portfolioShareArray;
-       MumsPortfolio;
-       callback(MumsPortfolio);
+      MumsPortfolio;
+      callback(MumsPortfolio);
 }
 
 window.onload = function(){
