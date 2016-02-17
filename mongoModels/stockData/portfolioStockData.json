@@ -2,7 +2,7 @@
   {
     "holder": "Jay's Mum",
     "cash": 4000,
-    "SharePortfolio": {
+    "PortfolioShares": {
       "shareObject"   : "56c33a2d11701297d14054e7",
       "quantity"      : 10,
       "purchaseDate": "2016-02-17",

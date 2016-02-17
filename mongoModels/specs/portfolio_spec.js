@@ -13,6 +13,8 @@ describe('MongoPortfolio', function(){
       expect(res.body.length).to.be.above(0);
       expect(res.body).to.be.an('array');
       console.log(res.body);
+      expect(res.body[0]).to.be.an('object');
+      expect(res.body[0]).to.contain.all.keys(['_id', 'holder', 'cash', 'PortfolioShares']);
       done();
     });
   });

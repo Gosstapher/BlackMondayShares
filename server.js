@@ -4,6 +4,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var Shares = require('./mongoModels/share.js');
+var Portfolio = require('./mongoModels/portfolio.js')
 
 mongoose.connect('mongodb://localhost/black-monday');
 
@@ -26,7 +27,7 @@ app.get("/shares", function(req, res){
 });
 
 //GET REQUEST TO PORTFOLIO COLLECTION
-app.get("/portfolio", function(res, req){
+app.get("/portfolio", function(req, res){
   Portfolio.find(function(err, portfolio){
     if(err) console.log("portfolio collection error: ", err);
     res.json(portfolio);
@@ -34,7 +35,9 @@ app.get("/portfolio", function(res, req){
 });
 
 //POST REQUEST TO SHAREPORTFOLIO
-app.post("/share")
+// app.post("/portfolio", function(res, req){
+
+// });
 
 var server = app.listen(3000, function () {
   var host = server.address().address;

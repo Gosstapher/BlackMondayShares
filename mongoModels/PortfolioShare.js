@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Share = require('./share.js');
 
-var PortfolioShare = new mongoose.Schema({
+var PortfolioShareSchema = new mongoose.Schema({
   share: {type: mongoose.Schema.Types.ObjectId, ref: 'Share'},
   quantity: Number,
   purchaseDate: Date,
