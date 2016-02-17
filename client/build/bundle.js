@@ -28017,10 +28017,6 @@
 	            type: 'column',
 	            renderTo: chartContainer,
 	        },
-	        title: {
-	             text: shareObject.Name +' Share Live Data',
-	             align: 'center',
-	        },
 	        subtitle: {
 	             text: "CurrentSharePrice: " + shareObject.Currency+ " " + shareObject.Ask,
 	             align: 'left',
@@ -28033,6 +28029,9 @@
 	        },
 	        xAxis: {
 	            categories: ['Change Since Yesterday', 'Change on Month Average', 'Change on Six Month Average', 'Change On Year High Price', 'Change on Year Low Price', ]
+	        },
+	        legend: {
+	             enabled: false
 	        },
 	
 	        tooltip: {
@@ -28072,7 +28071,7 @@
 	    //Get the total Values of the Portfolio
 	    var holderName = document.querySelector("#holderName");
 	    holderName.innerHTML = "<h2 class='title'>" + portfolio.holder + " Share Portfolio</h2>";
-	
+	    holderName.style.textDecoration = "underline"
 	    var portfolioContainer = document.querySelector("#mainPortfolioContainer")
 	  //Portfolio Column Chart
 	    var portfolioChart = document.createElement("div");
@@ -28080,6 +28079,10 @@
 	    portfolioChart.id = "portfolioChart";
 	    portfolioChart.style.width = "50%";
 	    portfolioChart.style.display = "inline-block";
+	
+	    var pDisplay = document.querySelector("#pDisplay")
+	    pDisplay.style.visibility = "visible";
+	
 	    
 	
 	
@@ -28090,8 +28093,11 @@
 	        renderTo: portfolioChart,
 	      },
 	      title: {
-	        text:"Graph displaying info for " + portfolio.holder + " Portfolio",
+	        text:"Asset Makeup of " + portfolio.holder + " Portfolio in USD ($)",
 	        align: 'center',
+	      },
+	      legend: {
+	        enabled: false
 	      },
 	      yAxis: {
 	        title: {
@@ -28102,7 +28108,7 @@
 	        categories: ['Total Assets', 'Shares holdings', 'Cash Holdings' ]
 	      },
 	      tooltip: {
-	        valuePrefix: '£'
+	        valuePrefix: '$'
 	      },
 	      plotOptions: {
 	              column: {
@@ -28156,46 +28162,46 @@
 	    }) //End of Pie Chart Construct         
 	
 	    //Create Text Table with Portfolio Information
-	    var portfolioCurrentValue = document.createElement("h3")
-	    portfolioCurrentValue.innerText ="Total Assets in Portfolio: £" + ((portfolio.getCurrentValue().totalAssets)/100) + "          Invested in Shares: £" + ((portfolio.getCurrentValue().shareValue)/100) + "          Cash Holdings: £" + ((portfolio.getCurrentValue().cashTotal)/100);
-	      portfolioContainer.appendChild(portfolioCurrentValue);
-	
-	    
 	    for(shareObject of portfolio.sharePortfolio){
-	      var portfolioContainer = document.querySelector("#mainPortfolioContainer")
-	      var shareRow = document.createElement("div");
-	      shareRow.id = shareObject.name
-	      //Share Name Display
-	      var nameHolder = document.createElement("p");
-	      nameHolder.innerText ="Company Name: " + shareObject.name;
-	      shareRow.appendChild(nameHolder);
-	      //Share epic Display
-	      var epicHolder = document.createElement("a");
-	      epicHolder.innerText = "Share identifer: " + shareObject.share.epic;
-	      epicHolder.href = "https://www.google.co.uk/finance?q=" + shareObject.share.epic + "&ei=cmXEVqG2IoPEU7nxi9gL";
-	      shareRow.appendChild(epicHolder);
-	      //Share Current Price Display
-	      var priceHolder = document.createElement("p");
-	      priceHolder.innerText = "Current Share Price: " + shareObject.share.price + " pence";
-	      shareRow.appendChild(priceHolder);
-	      //Quantity of shares held
-	      var quantityHolder = document.createElement("p");
-	      quantityHolder.innerText ="Quantity Held: " + shareObject.quantity;
-	      shareRow.appendChild(quantityHolder);
-	      //Display Buy Price
+	      //Company Name 
+	      var cTable = document.querySelector("#pBody")
+	      var cRow = document.createElement("tr");
+	      cTable.appendChild(cRow);
+	      var cName = document.createElement("td");
+	      cName.innerText = shareObject.name;
+	      cRow.appendChild(cName);
+	      //Stock Symbol
+	      var cSym = document.createElement("td");
+	      cSym.innerHTML = "<a href='https://www.google.co.uk/finance?q=" + shareObject.share.epic + "&ei=cmXEVqG2IoPEU7nxi9gL'>" + shareObject.share.epic + "</a>";
+	      cRow.appendChild(cSym);
+	      //Share Current Price
+	      var cPrice = document.createElement("td");
+	      cPrice.innerText = shareObject.share.price;
+	      cRow.appendChild(cPrice);
+	      //Quantity of Shares
+	      var cQuant = document.createElement("td");
+	      cQuant.innerText = shareObject.quantity;
+	      cRow.appendChild(cQuant);
+	      //Buy Price
+	      var cBuy = document.createElement("td");
+	      cBuy.innerText = shareObject.avgPurchasePrice
+	      cRow.appendChild(cBuy)
+	      //Percentage Change
 	      var percentageChange = ((shareObject.share.price - shareObject.avgPurchasePrice)/(shareObject.avgPurchasePrice)) * 100;
-	      var buyHolder = document.createElement("div");
-	      buyHolder.innerHTML = "<p>Buy Price: " + shareObject.avgPurchasePrice + "pence <br> Percentage Change: " + Math.round(percentageChange) + "% </p>" ;
-	      var percentView = document.querySelector(".percentageChange")
-	        if(percentageChange > 0){
-	          buyHolder.style.color = "green"
-	        }else{
-	          buyHolder.style.color = "red"
-	        }
-	      shareRow.appendChild(buyHolder);
-	      portfolioContainer.appendChild(shareRow);
-	      shareRow.style.borderTop = "thick solid #0000FF";
-	    }//End of Table Build
+	      var cChange = document.createElement("td");
+	      cChange.innerText = Math.round(percentageChange);
+	      cRow.appendChild(cChange);
+	      if(percentageChange > 0){
+	        cChange.style.color = "green"
+	      }else{
+	        cChange.style.color = "red"
+	      }
+	    }
+	    
+	
+	  
+	    
+	    
 	      //Create Analysis Button
 	      var analysisButton = document.createElement("button");
 	      analysisButton.id = "analysisButton";
@@ -28236,21 +28242,19 @@
 	
 	    //Start of Share Percentage Change Since bought Chart
 	    var sharePerformanceContainer = document.querySelector("#sharePerformance");
-	    sharePerformanceContainer.style.width ="50%"
+	    sharePerformanceContainer.style.width ="45%"
+	    sharePerformanceContainer.style.display ="inline-block"
+	    sharePerformanceContainer.style.padding ="10px"
 	    var chart = new Highcharts.Chart({
 	      chart: {
 	          type: 'column',
 	          renderTo: sharePerformanceContainer,
 	      },
 	      title: {
-	           text: portfolio.holder + " Stocks Portfolio",
+	           text: portfolio.holder + " Shares Held Performance Per Share in %",
 	           align: 'center',
 	      },
-	      subtitle: {
-	           text: "Shares Held Performance Per Share in %",
-	           align: 'center',
-	           style: {"color":"blue", "font-size":"1.2em"}
-	      },
+	      
 	      yAxis: {
 	          title: {
 	              text: 'Percentage Perforance (%)'
@@ -28276,19 +28280,16 @@
 	    //Start of Earning Per Share Chart
 	    var earningPerShareContainer = document.querySelector("#earningsPerShare");
 	    earningPerShareContainer.style.width ="50%"
+	    earningPerShareContainer.style.display ="inline-block"
+	    earningPerShareContainer.style.padding ="10px"
 	    var chart = new Highcharts.Chart({
 	      chart: {
 	          type: 'column',
 	          renderTo: earningPerShareContainer,
 	      },
 	      title: {
-	           text: portfolio.holder + " Stocks Portfolio",
+	           text: portfolio.holder + "Earnings per Share in the Portfolio in cents",
 	           align: 'center',
-	      },
-	      subtitle: {
-	           text: "Earnings per Share in the Portfolio in cents",
-	           align: 'center',
-	           style: {"color":"blue", "font-size":"1.2em"}
 	      },
 	      yAxis: {
 	          title: {
@@ -28316,6 +28317,7 @@
 	    //New Chart with performance by holding of each Share
 	    var earningPerHolding = document.querySelector("#earningsPerHolding");
 	    earningPerShareContainer.style.width ="50%"
+	    earningPerShareContainer.style.display ="inline-block"
 	    var chart = new Highcharts.Chart({
 	      chart: {
 	          type: 'column',
@@ -28368,7 +28370,7 @@
 	
 	
 	   var comparisonLine = document.querySelector("#comparisonLine");
-	   comparisonLine.style.width ="80%";
+	   comparisonLine.style.width ="100%";
 	   var chart = new Highcharts.Chart({
 	      chart: {
 	         type: 'line',
