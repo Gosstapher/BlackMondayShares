@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 
 var shareSchema = new mongoose.Schema({
-  name: String,
-  epic: String,
+  name: {String, required: true, unique: false}, 
+  epic: {String, required: true, unique: true},
   currentPrice: Number,
   closePrices: []
 },
