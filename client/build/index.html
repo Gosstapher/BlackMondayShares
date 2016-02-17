@@ -9,21 +9,45 @@
 <body width="100%">
 <h1 id="mainTitle">Black Monday Shares App</h1>
 
-  <form>
+  <form id="EpicInput">
     <input id="epicValue" type="text" name="epic">
     <input id="shareSearch" type="submit" value="Submit" name="epic">
   </form>
+
   <div id="liveShareChart" style="width:50%">
-    
+    <!-- Where the live Share Chart Goes -->
   </div>
 
-  <div id="shareDisplay">
+  <table id="shareDisplay">
       <h2 id="shareName"></h2>
+      <p>All Prices in USD ($)</p>
+  <thead>
+      <th>Current Price</th>
+      <th>Prevoius Close</th>
+      <th>Change Since Previous Close</th>
+      <th>Year High</th>
+      <th>Now to Year High % Change</th>
+      <th>Year Low</th>
+      <th>Now to Year Low % Change</th>
+  </thead>
+  <tbody>
+      <tr>
+        <th id="currentPrice"></th>
+        <th id="prevoiusClose"></th>
+        <th id="sinceClose"></th>
+        <th id="yearHigh"></th>
+        <th id="changeHigh"></th>
+        <th id="yearLow"></th>
+        <th id="changeLow"></th>
+      </tr>
+  </tbody>
+  </table>
+
       <h3 id="sharePrice"></h3>
       <ul id="dailyChange"></ul>
       <ul id="year"></ul>
+      
       <button id="portfolioButton">See your Portfolio</button>
-  </div>
 
 
   <section id="porfolioDisplay">
@@ -40,6 +64,13 @@
     <div id="earningsPerShare">
         
     </div>
+    <div id="earningsPerHolding">
+        
+    </div>
+    <div id="comparisonLine">
+        
+    </div>
+
   </section>
 
 </body>

@@ -3,18 +3,16 @@ function PortfolioView(){
 
   this.apiShareView = function(shareObject){
       //Display Share Name
-      console.log(shareObject)
       var shareName = document.querySelector("#shareName");
       shareName.innerText = shareObject.Name;
       //Display Current Price
-      var sharePrice = document.querySelector("#sharePrice");
-      sharePrice.innerText = "Current Share Price: £" + shareObject.Ask;
+      var sharePrice = document.querySelector("#currentPrice");
+      sharePrice.innerText = shareObject.Ask;
       //Display Yesterday Closing Price
-      var yesterdayContainer = document.querySelector("#dailyChange")
-      yesterdayContainer.innerHTML = " "
-      var yesterdayPrice = document.createElement("li");
-      yesterdayPrice.innerText = "Previous Closing Price: £" + shareObject.PreviousClose
-      var yesterdayComparison = document.createElement("li");
+      var yesterdayContainer = document.querySelector("#prevoiusClose")
+      yesterdayContainer.innerText = shareObject.PreviousClose;
+      //Display change since Yesterday
+      var yesterdayComparison = document.querySelector("#sinceClose");
       yesterdayComparison.innerText = (((shareObject.Ask - shareObject.PreviousClose)/shareObject.PreviousClose) * 100).toFixed(2) + "%";
       console.log(typeof(yesterdayComparison.innerText[0]))
       if(yesterdayComparison.innerText[0] == "-"){
@@ -22,15 +20,16 @@ function PortfolioView(){
       }else{
         yesterdayComparison.style.color = "green"
       }
-      yesterdayContainer.appendChild(yesterdayPrice);
-      yesterdayContainer.appendChild(yesterdayComparison);
+      
+     
 
       //Display Change Against Year High and Low
-      var yearContainer = document.querySelector("#year")
+      var yearContainer = document.querySelector("#yearHigh")
       yearContainer.innerHTML = " "
-      var yearHigh = document.createElement("li")
-      var yearLow = document.createElement("li")
-      yearHigh.innerHTML = "<p>Year High: " +  shareObject.YearHigh + " Compared to today: " + ((shareObject.ChangeFromYearHigh/shareObject.YearHigh)*100).toFixed(2) +  "% </p><p>Year Low: " + shareObject.YearLow + " Compared to today: " + ((shareObject.ChangeFromYearLow/shareObject.YearLow)*100).toFixed(2) + "%";
+
+      var yearHigh = document.querySelector("#yearHigh")
+      var yearHigh = document.querySelector("#yearLow")
+     // yearHigh.innerHTML = "<p>Year High: " +  shareObject.YearHigh + " Compared to today: " + ((shareObject.ChangeFromYearHigh/shareObject.YearHigh)*100).toFixed(2) +  "% </p><p>Year Low: " + shareObject.YearLow + " Compared to today: " + ((shareObject.ChangeFromYearLow/shareObject.YearLow)*100).toFixed(2) + "%";
 
       yearContainer.appendChild(yearHigh)
       //Start of Share Info Chart
@@ -106,7 +105,7 @@ function PortfolioView(){
       },
       yAxis: {
         title: {
-          text: 'Value in Currency (£)'
+          text: 'Value in USD ($)'
         },   
       },
       xAxis: {
@@ -125,7 +124,7 @@ function PortfolioView(){
       },
       series: [{
         data:[
-          ["Total Assets Held", (portfolio.getCurrentValue().totalAssets/100)],
+          ["Total Assets Held", (portfolio.getCurrentValue().totalAssets)/100],
           ["Total Share Holdings", (portfolio.getCurrentValue().shareValue/100)],
           ["Total Cash Holdings", (portfolio.getCurrentValue().cashTotal/100)],
         ]
@@ -143,7 +142,7 @@ function PortfolioView(){
 
     portfolioHoldings = []
     for(shareObject of portfolio.sharePortfolio){
-      pieDataObject = [shareObject.name, (shareObject.share.price*shareObject.quantity)];
+      pieDataObject = [shareObject.name, (shareObject.share.price*shareObject.quantity/100)];
       portfolioHoldings.push(pieDataObject);
     }
     console.log(portfolioHoldings)
@@ -162,7 +161,7 @@ function PortfolioView(){
             data: portfolioHoldings
          }],
          tooltip: {
-           valuePrefix: '£'
+           valuePrefix: '$'
          }
     }) //End of Pie Chart Construct         
 
@@ -181,8 +180,9 @@ function PortfolioView(){
       nameHolder.innerText ="Company Name: " + shareObject.name;
       shareRow.appendChild(nameHolder);
       //Share epic Display
-      var epicHolder = document.createElement("p");
+      var epicHolder = document.createElement("a");
       epicHolder.innerText = "Share identifer: " + shareObject.share.epic;
+      epicHolder.href = "https://www.google.co.uk/finance?q=" + shareObject.share.epic + "&ei=cmXEVqG2IoPEU7nxi9gL";
       shareRow.appendChild(epicHolder);
       //Share Current Price Display
       var priceHolder = document.createElement("p");
@@ -224,17 +224,25 @@ function PortfolioView(){
     var shareNames = [];
     var sharePerformanceData = [];
     var shareEarningData = [];
-
+    var holdingData = []
     for(shareObject of portfolio.sharePortfolio){
       var newSharePerformanceData = [shareObject.name, (((shareObject.share.price - shareObject.avgPurchasePrice)/(shareObject.avgPurchasePrice)) * 100)]
       var newShareEarningData = [shareObject.name, (shareObject.share.price - shareObject.avgPurchasePrice)]
+      var newHoldingData = [shareObject.name, (((shareObject.share.price - shareObject.avgPurchasePrice)*shareObject.quantity)/100)]
+
       var newShareName = shareObject.name;
       
       
       sharePerformanceData.push(newSharePerformanceData);
       shareEarningData.push(newShareEarningData);
       shareNames.push(newShareName);
+      holdingData.push(newHoldingData)
     }
+    //Getting Data for total Profit or loss from the Portfolio
+    totalPerformance = 0;
+    for(holding of holdingData){
+      totalPerformance += holding[1]
+    }//
 
     //Start of Share Percentage Change Since bought Chart
     var sharePerformanceContainer = document.querySelector("#sharePerformance");
@@ -313,6 +321,89 @@ function PortfolioView(){
       }]
     
     })//end of Earning Per Share HighChart
+
+
+    //New Chart with performance by holding of each Share
+    var earningPerHolding = document.querySelector("#earningsPerHolding");
+    earningPerShareContainer.style.width ="50%"
+    var chart = new Highcharts.Chart({
+      chart: {
+          type: 'column',
+          renderTo: earningPerHolding,
+      },
+      title: {
+           text: portfolio.holder + " Earnings per Holding",
+           align: 'center',
+      },
+      subtitle: {
+           text: "Overall Portfolio Performance in USD: $" + Number(totalPerformance).toLocaleString() + " Percentage Loss: "  + (totalPerformance/portfolio.getCurrentValue().shareValue*10000) +"%",
+           align: 'left',
+           style: {"color":"blue", "font-size":"1.2em"}
+      },
+      yAxis: {
+          title: {
+              text: 'Earnings in USD ($)'
+          },   
+      },
+      xAxis: {
+          categories: shareNames,
+      },
+
+      tooltip: {
+          valuePrefix: '$'
+      },
+      series: [{
+
+        data: holdingData,
+        threshold: 0,
+        negativeColor: 'red',
+        color: 'green',
+      }]
+    
+    })//end of Earning Per Share HighChart
+
+    //Start of Share Line Chart
+
+seriesData = [];
+for(shareObject of portfolio.sharePortfolio){
+    var closingPrices = shareObject.share.closingPrice;
+    var dataObject = {name:shareObject.name, data:[]}
+    for(date of closingPrices){
+      var prices = date.price
+      dataObject.data.push(prices)
+    }
+    seriesData.push(dataObject)
+   } 
+   console.log(seriesData)// seriesdata is the Name of the data required for a line chart
+
+
+   var comparisonLine = document.querySelector("#comparisonLine");
+   comparisonLine.style.width ="80%";
+   var chart = new Highcharts.Chart({
+      chart: {
+         type: 'line',
+         renderTo: comparisonLine,
+      },
+      title: {
+          text: portfolio.holder + " Past Performance By Share",
+          align: 'center',
+      },
+   yAxis: {
+      title: {
+         text: 'Earnings in USD (cents)'
+      },   
+    },
+   xAxis: {
+        categories: ["01/01/16", "02/01/16", "03/01/16", "04/01/16", "05/01/16", "08/01/16", "09/01/16"],
+   },
+   tooltip: {
+       valueSuffix: 'cents'
+   },
+   series: seriesData,
+  
+   
+   })//end of Comparison
+
 
       
   }//End of analysisView
