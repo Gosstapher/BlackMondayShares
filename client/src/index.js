@@ -4,7 +4,7 @@ var apiModel = require('./models/api.js');
 var Share = require('./models/share.js');
 var Portfolio = require('./models/portfolio.js');
 var PortfolioView = require('./PortfolioView.js');
-var MongoShare = require('../../mongoModels/share.js');
+
 
 share1 = new Share("Insleys", "INS", 120.00)
 portfolioView = new PortfolioView();

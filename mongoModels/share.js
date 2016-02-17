@@ -13,7 +13,6 @@ shareSchema.methods.updateCurrentPrice = function(price){
   this.currentPrice = price;
 };
 
-var MongoShare = mongoose.model('mongoShare', shareSchema);
-
+var MongoShare = mongoose.model('MongoShare', shareSchema);
 
 module.exports = MongoShare;

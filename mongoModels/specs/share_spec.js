@@ -17,4 +17,32 @@ describe('mongoShare', function(){
       done();
     });
   });
+
+  it('should make a POST request to crate a share', function(done){
+    superagent.post('http://localhost:3000/shares').send({
+      name: "GlaxoSmithKline PLC Common Stoc",
+      epic: "GSK",
+      currentPrice: 32.28
+    }).end(function(err, res){
+      expect(err).to.eql(null);
+      expect(res.body).to.be.an('object');
+      expect(res.body).to.contain.all.keys(['_id', 'name', 'epic', 'currentPrice']);
+      console.log(res.body)
+      done();
+    });
+  });
+
+  it('should throw an ERROR if name or epic mot present', function(done){
+    superagent.post('http://localhost:3000/shares').send({
+      currentPrice: 19.99
+    }).end(function(err, res){
+      expect(err).to.be(true);
+      console.log(err.message);
+    });
+  });
 });
+
+
+
+
+

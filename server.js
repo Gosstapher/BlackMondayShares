@@ -18,26 +18,43 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 
+
+
+//DB SHARES
+
 // GET REQUEST TO SHARE COLLECTION
 app.get("/shares", function(req, res){
   Shares.find(function(err, shares) {
-    if(err) console.log("share collection error: ", err);
+    if(err) console.log("share GET error: ", err);
     res.json(shares);
   });
 });
 
-//GET REQUEST TO PORTFOLIO COLLECTION
-app.get("/portfolio", function(req, res){
-  Portfolio.find(function(err, portfolio){
-    if(err) console.log("portfolio collection error: ", err);
-    res.json(portfolio);
+//POST - CREATE NEW SHARE ON SEARCH
+app.post("/shares", function(req, res){
+  var newShare = new Shares(req.body);
+
+  newShare.save(function(err, share){
+    if(err) console.log("share POST error: ", err);
+    console.log("New share Created");
+    res.json(newShare);
   });
 });
 
-//POST REQUEST TO SHAREPORTFOLIO
-// app.post("/portfolio", function(res, req){
+//UPDATE SHARE
+// app.post('/shares/:id', function(req, res){
 
 // });
+
+//DB PORTFOLIO (SORRY FOR THE COMMENTS VAL)
+
+//GET REQUEST TO PORTFOLIO COLLECTION
+app.get("/portfolio", function(req, res){
+  Portfolio.find(function(err, portfolio){
+    if(err) console.log("portfolio GET error: ", err);
+    res.json(portfolio);
+  });
+});
 
 var server = app.listen(3000, function () {
   var host = server.address().address;
