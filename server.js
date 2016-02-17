@@ -33,6 +33,9 @@ app.get("/portfolio", function(res, req){
   });
 });
 
+//POST REQUEST TO SHAREPORTFOLIO
+app.post("/share")
+
 var server = app.listen(3000, function () {
   var host = server.address().address;
   var port = server.address().port;

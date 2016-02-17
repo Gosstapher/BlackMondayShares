@@ -4,6 +4,7 @@ var apiModel = require('./models/api.js');
 var Share = require('./models/share.js');
 var Portfolio = require('./models/portfolio.js');
 var PortfolioView = require('./PortfolioView.js');
+var MongoShare = require('../../mongoModels/share.js');
 
 share1 = new Share("Insleys", "INS", 120.00)
 portfolioView = new PortfolioView();
@@ -27,7 +28,9 @@ window.onload = function(){
   createShares(portfolioView.createView);
 }
 
-var populateSharesFromDB = function(collection){
+//
+
+var populateFromDB = function(collection){
   var url = '/'+collection;
   var request = new XMLHttpRequest();
   request.open("GET", url);
@@ -41,8 +44,8 @@ var populateSharesFromDB = function(collection){
   request.send(null);
 }
 
-populateFromDB(shares);
-populateFromDB(portfolio);
+populateFromDB('shares');
+populateFromDB('portfolio');
 
 
 function bindEvents(){
@@ -59,6 +62,7 @@ function bindEvents(){
 }
 
 function createShareModel(shareData){
+
   var newShare = new Share(shareData.Name, shareData.symbol, shareData.Ask);
   console.log(newShare);
 }

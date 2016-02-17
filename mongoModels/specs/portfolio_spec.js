@@ -1,4 +1,4 @@
-var Portfolio = require('../portfolio.js');
+var MongoPortfolio = require('../portfolio.js');
 var Share = require('../share.js');
 var assert = require('chai').assert;
 var expect = require('chai').expect;

@@ -9,6 +9,11 @@ var shareSchema = new mongoose.Schema({
 {"collection": "shares"}
 );
 
+shareSchema.methods.updateCurrentPrice = function(price){
+  this.currentPrice = price;
+};
+
 var MongoShare = mongoose.model('mongoShare', shareSchema);
+
 
 module.exports = MongoShare;

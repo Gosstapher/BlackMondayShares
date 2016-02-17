@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
-var Share = require('./share.js');
+var PortfolioShare = require('./PortfolioShare.js');
 
-var portfolioSchema = new mongoose.Schema({
+var PortfolioSchema = new mongoose.Schema({
   holder: {type: String, required: true, unique: false},
   cash: Number,
-  sharePortfolio: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Share', quantity: 'number' }]
+  PortfolioShares: [{type: mongoose.Schema.Types.ObjectId, ref: 'PortfolioShare'}]
 },
 {"collection": "portfolio"}
 );
 
-var MongoPortfolio = mongoose.model('MongoPortfolio', portfolioSchema);
+var MongoPortfolio = mongoose.model('MongoPortfolio', PortfolioSchema);
 
 module.exports = MongoPortfolio;
