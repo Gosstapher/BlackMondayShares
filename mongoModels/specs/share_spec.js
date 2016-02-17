@@ -10,6 +10,9 @@ describe('mongoShare', function(){
     superagent.get('http://localhost:3000/shares').end(function(err, res){
       expect(err).to.eql(null);
       expect(res.body.length).to.be.above(0);
+      expect(res.body).to.be.an('array');
+      expect(res.body[0]).to.be.an('object');
+      expect(res.body[0]).to.contain.all.keys(['_id', 'name', 'epic', 'closePrices']);
       console.log(res.body);
       done();
     });
