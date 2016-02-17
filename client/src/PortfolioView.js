@@ -1,9 +1,7 @@
 
-var PortfolioView = function(){
+function PortfolioView(){
 
   this.apiShareView = function(shareObject){
-      //Clear Objects
-
       //Display Share Name
       console.log(shareObject)
       var shareName = document.querySelector("#shareName");
@@ -35,7 +33,7 @@ var PortfolioView = function(){
       yearHigh.innerHTML = "<p>Year High: " +  shareObject.YearHigh + " Compared to today: " + ((shareObject.ChangeFromYearHigh/shareObject.YearHigh)*100).toFixed(2) +  "% </p><p>Year Low: " + shareObject.YearLow + " Compared to today: " + ((shareObject.ChangeFromYearLow/shareObject.YearLow)*100).toFixed(2) + "%";
 
       yearContainer.appendChild(yearHigh)
-
+      //Start of Share Info Chart
       var chartContainer = document.querySelector("#liveShareChart");
       var chart = new Highcharts.Chart({
         chart: {
@@ -79,11 +77,6 @@ var PortfolioView = function(){
       
       })//end of HighChart
 
-     console.log(chart) 
-
-
-
-
   }
 
   this.createView = function(portfolio){
@@ -93,12 +86,11 @@ var PortfolioView = function(){
 
     var portfolioContainer = document.querySelector("#mainPortfolioContainer")
   //Portfolio Column Chart
-
     var portfolioChart = document.createElement("div");
     portfolioContainer.appendChild(portfolioChart);
     portfolioChart.id = "portfolioChart";
     portfolioChart.style.width = "50%";
-
+    portfolioChart.style.display = "inline-block";
     
 
 
@@ -139,13 +131,15 @@ var PortfolioView = function(){
         ]
       }]
 
-    })
+    })//End of bar chart Construct
 
     //Creating Data for Pie Chart
     var portfolioPie = document.createElement("div");
     portfolioContainer.appendChild(portfolioPie);
     portfolioPie.id = "portfolioPie";
     portfolioPie.style.width = "50%";
+    portfolioPie.style.display = "inline-block";
+
 
     portfolioHoldings = []
     for(shareObject of portfolio.sharePortfolio){
@@ -169,18 +163,10 @@ var PortfolioView = function(){
          }],
          tooltip: {
            valuePrefix: '£'
-         },
+         }
+    }) //End of Pie Chart Construct         
 
-         
-        
-    })          
-
-
-
-
-
-
-
+    //Create Text Table with Portfolio Information
     var portfolioCurrentValue = document.createElement("h3")
     portfolioCurrentValue.innerText ="Total Assets in Portfolio: £" + ((portfolio.getCurrentValue().totalAssets)/100) + "          Invested in Shares: £" + ((portfolio.getCurrentValue().shareValue)/100) + "          Cash Holdings: £" + ((portfolio.getCurrentValue().cashTotal)/100);
       portfolioContainer.appendChild(portfolioCurrentValue);
@@ -220,8 +206,23 @@ var PortfolioView = function(){
       portfolioContainer.appendChild(shareRow);
       shareRow.style.borderTop = "thick solid #0000FF";
     }//End of Table Build
+      //Create Analysis Button
+      var analysisButton = document.createElement("button");
+      analysisButton.id = "analysisButton";
+      analysisButton.innerText = "Portfolio Analysis"
+      portfolioContainer.appendChild(analysisButton);
+      //Make analyis button do new function
+      var self = this;
+      analysisButton.addEventListener('click', function(){
+         self.analysisView(portfolio)
+      })
     
   }//End of Create View Method
+
+  this.analysisView = function(portfolio){
+      console.log("This is the analysis View console log portfolio" + portfolio)
+  }//End of analysisView
+
 }//end of model
 
 module.exports = PortfolioView;

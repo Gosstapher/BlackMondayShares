@@ -52,10 +52,10 @@
 	var PortfolioView = __webpack_require__(105);
 	
 	share1 = new Share("Insleys", "INS", 120.00)
-	portfolioView = new PortfolioView();
+	var portfolioView = new PortfolioView();
 	
 	
-	  createShares = function(callback){
+	  var createShares = function(){
 	      portfolioShareArray = [];
 	      for(object of sampleStocks){
 	        var onloadShare = new Share(object.name, object.epic, object.price);
@@ -63,15 +63,14 @@
 	        var portfolioShareInfo = {name:object.name, share:onloadShare, quantity:object.quantity, date:object.buyDate, avgPurchasePrice:object.buyPrice}
 	        portfolioShareArray.push(portfolioShareInfo);
 	      }
-	      var MumsPortfolio = new Portfolio("Mum's", 1000)
+	      var MumsPortfolio = new Portfolio("Mum's", 1000000)
 	      MumsPortfolio.sharePortfolio = portfolioShareArray;
-	       MumsPortfolio;
-	       callback(MumsPortfolio);
+	      portfolioView.createView(MumsPortfolio);
 	}
 	
 	
 	window.onload = function(){
-	  bindEvents(portfolioView.apiShareView);
+	  bindEvents();
 	  //createShares(portfolioView.createView);
 	}
 	
@@ -85,13 +84,12 @@
 	    var epic = epicValue.value.toUpperCase();
 	    apiModel.get(epic, portfolioView.apiShareView);
 	  }
-	
+	//Button for DropDown of Portfolio
 	 var portfolioDropdown = document.getElementById("portfolioButton");
-	 portfolioDropdown.addEventListener('click', function(){
-	    console.log("Working")
-	    createShares(portfolioView.createView);
-	    
-	 })
+	 
+	  portfolioDropdown.addEventListener('click', function(){
+	    createShares();
+	  })
 	
 	
 	}
@@ -27962,11 +27960,9 @@
 /***/ function(module, exports) {
 
 	
-	var PortfolioView = function(){
+	function PortfolioView(){
 	
 	  this.apiShareView = function(shareObject){
-	      //Clear Objects
-	
 	      //Display Share Name
 	      console.log(shareObject)
 	      var shareName = document.querySelector("#shareName");
@@ -27998,7 +27994,7 @@
 	      yearHigh.innerHTML = "<p>Year High: " +  shareObject.YearHigh + " Compared to today: " + ((shareObject.ChangeFromYearHigh/shareObject.YearHigh)*100).toFixed(2) +  "% </p><p>Year Low: " + shareObject.YearLow + " Compared to today: " + ((shareObject.ChangeFromYearLow/shareObject.YearLow)*100).toFixed(2) + "%";
 	
 	      yearContainer.appendChild(yearHigh)
-	
+	      //Start of Share Info Chart
 	      var chartContainer = document.querySelector("#liveShareChart");
 	      var chart = new Highcharts.Chart({
 	        chart: {
@@ -28042,11 +28038,6 @@
 	      
 	      })//end of HighChart
 	
-	     console.log(chart) 
-	
-	
-	
-	
 	  }
 	
 	  this.createView = function(portfolio){
@@ -28056,12 +28047,11 @@
 	
 	    var portfolioContainer = document.querySelector("#mainPortfolioContainer")
 	  //Portfolio Column Chart
-	
 	    var portfolioChart = document.createElement("div");
 	    portfolioContainer.appendChild(portfolioChart);
 	    portfolioChart.id = "portfolioChart";
 	    portfolioChart.style.width = "50%";
-	
+	    portfolioChart.style.display = "inline-block";
 	    
 	
 	
@@ -28102,13 +28092,15 @@
 	        ]
 	      }]
 	
-	    })
+	    })//End of bar chart Construct
 	
 	    //Creating Data for Pie Chart
 	    var portfolioPie = document.createElement("div");
 	    portfolioContainer.appendChild(portfolioPie);
 	    portfolioPie.id = "portfolioPie";
 	    portfolioPie.style.width = "50%";
+	    portfolioPie.style.display = "inline-block";
+	
 	
 	    portfolioHoldings = []
 	    for(shareObject of portfolio.sharePortfolio){
@@ -28132,18 +28124,10 @@
 	         }],
 	         tooltip: {
 	           valuePrefix: '£'
-	         },
+	         }
+	    }) //End of Pie Chart Construct         
 	
-	         
-	        
-	    })          
-	
-	
-	
-	
-	
-	
-	
+	    //Create Text Table with Portfolio Information
 	    var portfolioCurrentValue = document.createElement("h3")
 	    portfolioCurrentValue.innerText ="Total Assets in Portfolio: £" + ((portfolio.getCurrentValue().totalAssets)/100) + "          Invested in Shares: £" + ((portfolio.getCurrentValue().shareValue)/100) + "          Cash Holdings: £" + ((portfolio.getCurrentValue().cashTotal)/100);
 	      portfolioContainer.appendChild(portfolioCurrentValue);
@@ -28183,8 +28167,23 @@
 	      portfolioContainer.appendChild(shareRow);
 	      shareRow.style.borderTop = "thick solid #0000FF";
 	    }//End of Table Build
+	      //Create Analysis Button
+	      var analysisButton = document.createElement("button");
+	      analysisButton.id = "analysisButton";
+	      analysisButton.innerText = "Portfolio Analysis"
+	      portfolioContainer.appendChild(analysisButton);
+	      //Make analyis button do new function
+	      var self = this;
+	      analysisButton.addEventListener('click', function(){
+	         self.analysisView(portfolio)
+	      })
 	    
 	  }//End of Create View Method
+	
+	  this.analysisView = function(portfolio){
+	      console.log("This is the analysis View console log portfolio" + portfolio)
+	  }//End of analysisView
+	
 	}//end of model
 	
 	module.exports = PortfolioView;

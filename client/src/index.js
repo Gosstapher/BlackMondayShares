@@ -6,10 +6,10 @@ var Portfolio = require('./models/portfolio.js');
 var PortfolioView = require('./PortfolioView.js');
 
 share1 = new Share("Insleys", "INS", 120.00)
-portfolioView = new PortfolioView();
+var portfolioView = new PortfolioView();
 
 
-  createShares = function(callback){
+  var createShares = function(){
       portfolioShareArray = [];
       for(object of sampleStocks){
         var onloadShare = new Share(object.name, object.epic, object.price);
@@ -17,15 +17,14 @@ portfolioView = new PortfolioView();
         var portfolioShareInfo = {name:object.name, share:onloadShare, quantity:object.quantity, date:object.buyDate, avgPurchasePrice:object.buyPrice}
         portfolioShareArray.push(portfolioShareInfo);
       }
-      var MumsPortfolio = new Portfolio("Mum's", 1000)
+      var MumsPortfolio = new Portfolio("Mum's", 1000000)
       MumsPortfolio.sharePortfolio = portfolioShareArray;
-       MumsPortfolio;
-       callback(MumsPortfolio);
+      portfolioView.createView(MumsPortfolio);
 }
 
 
 window.onload = function(){
-  bindEvents(portfolioView.apiShareView);
+  bindEvents();
   //createShares(portfolioView.createView);
 }
 
@@ -39,13 +38,12 @@ function bindEvents(){
     var epic = epicValue.value.toUpperCase();
     apiModel.get(epic, portfolioView.apiShareView);
   }
-
+//Button for DropDown of Portfolio
  var portfolioDropdown = document.getElementById("portfolioButton");
- portfolioDropdown.addEventListener('click', function(){
-    console.log("Working")
-    createShares(portfolioView.createView);
-    
- })
+ 
+  portfolioDropdown.addEventListener('click', function(){
+    createShares();
+  })
 
 
 }
