@@ -14,7 +14,7 @@ function PortfolioView(){
       //Display change since Yesterday
       var yesterdayComparison = document.querySelector("#sinceClose");
       yesterdayComparison.innerText = (((shareObject.Ask - shareObject.PreviousClose)/shareObject.PreviousClose) * 100).toFixed(2) + "%";
-      console.log(typeof(yesterdayComparison.innerText[0]))
+     
       if(yesterdayComparison.innerText[0] == "-"){
         yesterdayComparison.style.color = "red"
       }else{
@@ -24,14 +24,31 @@ function PortfolioView(){
      
 
       //Display Change Against Year High and Low
-      var yearContainer = document.querySelector("#yearHigh")
-      yearContainer.innerHTML = " "
+    
+      console.log(shareObject)
+      var yearHigh = document.querySelector("#yearHigh");
+      var yearLow = document.querySelector("#yearLow");
+      var changeHigh = document.querySelector("#changeHigh");
+      var changeLow = document.querySelector("#changeLow");
+      yearHigh.innerHTML = shareObject.YearHigh
+      yearLow.innerHTML =  shareObject.YearLow
+      changeHigh.innerText = shareObject.PercebtChangeFromYearHigh;
+      changeLow.innerText =  shareObject.PercentChangeFromYearLow;
+      //Colouring Year High Data
+      if(changeHigh.innerText[0] == "-"){
+        changeHigh.style.color = "red"
+      }else{
+        changeHigh.style.color = "green"
+      } 
+      //Coloring Year Low Data
+      if(changeLow.innerText[0] == "-"){
+        changeLow.style.color = "red"
+      }else{
+        changeLow.style.color = "green"
+      }
+      
 
-      var yearHigh = document.querySelector("#yearHigh")
-      var yearHigh = document.querySelector("#yearLow")
-     // yearHigh.innerHTML = "<p>Year High: " +  shareObject.YearHigh + " Compared to today: " + ((shareObject.ChangeFromYearHigh/shareObject.YearHigh)*100).toFixed(2) +  "% </p><p>Year Low: " + shareObject.YearLow + " Compared to today: " + ((shareObject.ChangeFromYearLow/shareObject.YearLow)*100).toFixed(2) + "%";
-
-      yearContainer.appendChild(yearHigh)
+      
       //Start of Share Info Chart
       var chartContainer = document.querySelector("#liveShareChart");
       var chart = new Highcharts.Chart({
@@ -76,7 +93,19 @@ function PortfolioView(){
       
       })//end of HighChart
 
+  var recommend = document.querySelector("#recommendation")
+  if(shareObject.Ask < (shareObject.YearHigh*0.75) && shareObject.Ask > shareObject.PreviousClose && shareObject.Ask < (shareObject.PreviousClose*1.025)){
+      recommend.innerHTML = "<h3 id='recom' >Black Monday Recommend a Strong Buy on this Share </h3>"
+      recommend.style.color = "Green";
+  } else if(shareObject.Ask > (shareObject.YearHigh*0.8) && shareObject.Ask < (shareObject.PreviousClose*1.005) && shareObject.Ask > (shareObject.PreviousClose*0.99)){
+      recommend.innerHTML = "<h3 id='recom' >Black Monday Recommend a Strong Sell on this Share </h3>"
+      recommend.style.color = "Red";
+  }else {
+    recommend.innerHTML = "<h3 id='recom' >Black Monday Recommend is Neutral on this Stock </h3>"
+    recommend.style.color = "Black";
   }
+
+  },
 
   this.createView = function(portfolio){
     //Get the total Values of the Portfolio

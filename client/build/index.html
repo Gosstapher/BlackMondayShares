@@ -14,38 +14,41 @@
     <input id="shareSearch" type="submit" value="Submit" name="epic">
   </form>
 
-  <div id="liveShareChart" style="width:50%">
+  <section id="shareTable">
+        <h2 id="shareName"></h2>
+        <p>All Prices in USD ($)</p>
+    <table id="shareDisplay">
+    <thead>
+        <th>Current Price</th>
+        <th>Prevoius Close</th>
+        <th>Change Since Previous Close</th>
+        <th>Year High</th>
+        <th>Now to Year High % Change</th>
+        <th>Year Low</th>
+        <th>Now to Year Low % Change</th>
+    </thead>
+    <tbody>
+        <tr>
+          <td id="currentPrice"></td>
+          <td id="prevoiusClose"></td>
+          <td id="sinceClose"></td>
+          <td id="yearHigh"></td>
+          <td id="changeHigh"></td>
+          <td id="yearLow"></td>
+          <td id="changeLow"></td>
+        </tr>
+    </tbody>
+    </table>
+    </section>
+
+  <div id="liveShareChart">
     <!-- Where the live Share Chart Goes -->
   </div>
 
-  <table id="shareDisplay">
-      <h2 id="shareName"></h2>
-      <p>All Prices in USD ($)</p>
-  <thead>
-      <th>Current Price</th>
-      <th>Prevoius Close</th>
-      <th>Change Since Previous Close</th>
-      <th>Year High</th>
-      <th>Now to Year High % Change</th>
-      <th>Year Low</th>
-      <th>Now to Year Low % Change</th>
-  </thead>
-  <tbody>
-      <tr>
-        <th id="currentPrice"></th>
-        <th id="prevoiusClose"></th>
-        <th id="sinceClose"></th>
-        <th id="yearHigh"></th>
-        <th id="changeHigh"></th>
-        <th id="yearLow"></th>
-        <th id="changeLow"></th>
-      </tr>
-  </tbody>
-  </table>
-
-      <h3 id="sharePrice"></h3>
-      <ul id="dailyChange"></ul>
-      <ul id="year"></ul>
+    <div id="recommendation">
+        
+    </div>
+   
       
       <button id="portfolioButton">See your Portfolio</button>
 
